@@ -1,0 +1,476 @@
+#include "DuelScene.hpp"
+#include <SDL.h>
+#include <SDL_image.h>
+#include <iostream>
+#include <algorithm> // std::max
+#include "TextRenderer.hpp"
+#include "Game.hpp"
+
+void DuelScene::onEnter(Game* game) {
+    gamePtr = game;
+    change = false;
+    next = "";
+
+    enemyAlive = true;
+
+    // Ambil data karakter terpilih dari Game
+    if (gamePtr) {
+        const auto& ch = gamePtr->getChosenCharacter();
+        playerName          = ch.displayName;
+        player.hp           = ch.maxHP;
+        player.maxHP        = ch.maxHP;
+        playerAttackDamage  = ch.baseAttack;
+    } else {
+        playerName          = "Pejuang";
+        player.hp           = 100;
+        player.maxHP        = 100;
+        playerAttackDamage  = 15;
+    }
+
+    // Musuh
+    enemyHP     = 100;
+    enemyMaxHP  = 100;
+
+    // Posisi awal (kita taruh di ground kira2)
+    // Nanti kita ambil window size buat penempatan musuh
+    int winW = 800;
+    int winH = 480;
+    if (gamePtr) {
+        gamePtr->getWindowSize(winW, winH);
+    }
+
+    // --- Load sprite player (spritesheet serangan) ---
+    {
+        SDL_Surface* surf = IMG_Load("../assets/images/player_attack.png");
+        if (!surf) {
+            std::cerr << "[DuelScene] Failed to load player_attack.png: " << IMG_GetError() << "\n";
+        } else {
+            player.texture = SDL_CreateTextureFromSurface(gamePtr->getRenderer(), surf);
+
+            // kita tau gambar punya N frame attack, asumsikan 5
+            player.frameCount = 5;
+            player.frameW = surf->w / player.frameCount;
+            player.frameH = surf->h;
+            player.currentFrame = 0;
+            player.attacking = false;
+            player.attackTimer = 0.0f;
+
+            SDL_FreeSurface(surf);
+        }
+    }
+
+    // --- Load sprite enemy (1 frame idle) ---
+    {
+        SDL_Surface* surf = IMG_Load("../assets/images/enemy_idle.png");
+        if (!surf) {
+            std::cerr << "[DuelScene] Failed to load enemy_idle.png: " << IMG_GetError() << "\n";
+        } else {
+            enemy.texture = SDL_CreateTextureFromSurface(gamePtr->getRenderer(), surf);
+            enemy.frameCount = 1;
+            enemy.frameW = surf->w;
+            enemy.frameH = surf->h;
+            enemy.currentFrame = 0;
+            enemy.attacking = false;
+            enemy.attackTimer = 0.0f;
+            enemy.hp = enemyHP;
+            enemy.maxHP = enemyMaxHP;
+
+            SDL_FreeSurface(surf);
+        }
+    }
+
+    // --- Load sprite player jump (5 frame) ---
+    {
+        SDL_Surface* surf = IMG_Load("../assets/images/jump.png"); // simpan jump.png ke path ini
+        if (!surf) {
+            std::cerr << "[DuelScene] Failed to load jump.png: " << IMG_GetError() << "\n";
+        } else {
+            playerJumpTex = SDL_CreateTextureFromSurface(gamePtr->getRenderer(), surf);
+            jumpFrameCount = 5;                 // sesuai spritesheet-mu
+            jumpFrameW = surf->w / jumpFrameCount;
+            jumpFrameH = surf->h;
+            SDL_FreeSurface(surf);
+        }
+        jumping = false;
+        jumpCurrentFrame = 0;
+        jumpTimer = 0.0f;
+    }
+
+    // letakkan player di kiri tanah
+    player.x = winW * 0.25f;
+    player.y = winH * 0.65f; // kira-kira lantai
+
+    // letakkan musuh di kanan tanah
+    enemy.x = winW * 0.65f;
+    enemy.y = winH * 0.65f;
+
+    moveLeft = false;
+    moveRight = false;
+
+    std::cout << "\n[DuelScene]\n";
+    std::cout << "Kamu bermain sebagai: " << playerName << "\n";
+    std::cout << "Kontrol:\n";
+    std::cout << "  LEFT/RIGHT: Gerak\n";
+    std::cout << "  A: Serang\n";
+    std::cout << "  ENTER: akhiri duel jika musuh kalah\n";
+    std::cout << "  ESC: mundur & kembali menu\n";
+    std::cout << "---------------------------------\n";
+}
+
+void DuelScene::handleEvent(const SDL_Event& e) {
+    if (e.type == SDL_KEYDOWN) {
+        SDL_Keycode key = e.key.keysym.sym;
+
+        if (key == SDLK_ESCAPE) {
+            change = true;
+            next  = "menu";
+            std::cout << "[Duel] Mundur. Kembali ke menu.\n";
+        }
+        else if (key == SDLK_RETURN) {
+            if (!enemyAlive || enemyHP <= 0) {
+                std::cout << "[Duel] Musuh tumbang. Lanjut ke ending.\n";
+                change = true;
+                next  = "ending";
+            } else {
+                std::cout << "[Duel] Musuh masih berdiri...\n";
+            }
+        }
+        else if (key == SDLK_LEFT) {
+            moveLeft = true;
+        }
+        else if (key == SDLK_RIGHT) {
+            moveRight = true;
+        }
+        else if (key == SDLK_a) {
+            // mulai animasi serangan (kalau belum menyerang)
+            if (!player.attacking) {
+                startPlayerAttack();
+            }
+        }
+        else if (key == SDLK_w || key == SDLK_SPACE) {
+            if (!jumping && !player.attacking) {
+                startPlayerJump();
+            }
+        }
+    }
+    else if (e.type == SDL_KEYUP) {
+        SDL_Keycode key = e.key.keysym.sym;
+
+        if (key == SDLK_LEFT) {
+            moveLeft = false;
+        }
+        else if (key == SDLK_RIGHT) {
+            moveRight = false;
+        }
+    }
+}
+
+void DuelScene::startPlayerAttack() {
+    player.attacking = true;
+    player.attackTimer = 0.0f;
+    player.currentFrame = 1; // mulai di frame serang, bukan idle 0
+    hasHitThisSwing = false; 
+}
+
+void DuelScene::update(float dt) {
+    // player gerak kiri/kanan
+    updatePlayerMovement(dt);
+
+    // update animasi serangan
+    updatePlayerAttack(dt);
+
+    updatePlayerJump(dt);
+
+    // cek kalau musuh udah habis HP
+    if (enemyHP <= 0 && enemyAlive) {
+        enemyHP = 0;
+        enemyAlive = false;
+        std::cout << "[Duel] Musuh kalah!\n";
+    }
+
+    // cek kalau player jatuh (HP <= 0)
+    if (player.hp <= 0) {
+        std::cout << "[Duel] Kamu tumbang! (sementara langsung ending)\n";
+        change = true;
+        next = "ending";
+    }
+}
+
+void DuelScene::updatePlayerMovement(float dt) {
+    if (!player.attacking) {
+        float dx = 0.0f;
+        if (moveLeft)  dx -= playerSpeed * dt;
+        if (moveRight) dx += playerSpeed * dt;
+        player.x += dx;
+
+        int winW = 800, winH = 480;
+        if (gamePtr) gamePtr->getWindowSize(winW, winH);
+
+        float spriteScale = std::clamp(winH / 720.0f, 1.0f, 2.4f);
+        float playerVisualW = player.frameW * spriteScale;
+
+        // batas layar kiri/kanan saja
+        float minX = playerVisualW * 0.5f + 10.0f;
+        float maxX = winW - playerVisualW * 0.5f - 10.0f;
+
+        if (player.x < minX) player.x = minX;
+        if (player.x > maxX) player.x = maxX;
+
+        // y tetap di tanah
+        float groundY = winH * 0.84f;
+        player.y = groundY;
+    }
+}
+
+void DuelScene::updateFacing() {
+    // Player menghadap ke musuh
+    playerFacingRight = (player.x <= enemy.x);
+    // Musuh menghadap ke player
+    enemyFacingRight = (enemy.x > player.x);
+}
+
+
+void DuelScene::updatePlayerAttack(float dt) {
+    if (!player.attacking) return;
+
+    player.attackTimer += dt;
+
+    // ganti frame berdasarkan timer
+    // attackFrameDuration = detik per frame
+    int frameIndex = (int)(player.attackTimer / player.attackFrameDuration);
+
+    if (frameIndex >= player.frameCount) {
+        // animasi selesai -> balik idle
+        player.attacking = false;
+        player.currentFrame = 0;
+        return;
+    } else {
+        player.currentFrame = frameIndex;
+    }
+
+    // selama frame serangan aktif, cek tabrakan dengan musuh
+    checkHitAndDamageEnemy();
+}
+
+void DuelScene::startPlayerJump() {
+    if (!playerJumpTex) return;  // safety
+    jumping = true;
+    jumpTimer = 0.0f;
+    jumpCurrentFrame = 0;
+}
+
+// Offset Y per frame (negatif = naik), frame ke-3 = puncak
+// Nilai akan di-“scale” sesuai tinggi layar biar proporsional fullscreen/windowed.
+static int JUMP_FRAME_OFFSETS[5] = { 0, -12, -24, -12, 0 };
+
+void DuelScene::updatePlayerJump(float dt) {
+    if (!jumping) return;
+
+    // advance timer
+    jumpTimer += dt;
+
+    // hitung ukuran layar untuk scaling offset
+    int winW = 800, winH = 480;
+    if (gamePtr) gamePtr->getWindowSize(winW, winH);
+    float spriteScale = std::clamp(winH / 720.0f, 1.0f, 2.4f);
+    float groundY = winH * 0.84f;
+
+    // tentukan frame
+    int idx = (int)(jumpTimer / jumpFrameDuration);
+    if (idx >= jumpFrameCount) {
+        // selesai lompat -> kembali idle di tanah
+        jumping = false;
+        jumpCurrentFrame = 0;
+        jumpTimer = 0.0f;
+        player.y = groundY;
+        return;
+    }
+    jumpCurrentFrame = idx;
+
+    // set posisi Y berdasarkan frame offset
+    int baseOffset = JUMP_FRAME_OFFSETS[jumpCurrentFrame];
+    player.y = groundY + baseOffset * spriteScale;
+}
+
+
+void DuelScene::checkHitAndDamageEnemy() {
+    if (!enemyAlive) return;
+    if (hasHitThisSwing) return;
+
+    int winW = 800, winH = 480;
+    if (gamePtr) gamePtr->getWindowSize(winW, winH);
+    float spriteScale = std::clamp(winH / 720.0f, 1.0f, 2.4f);
+
+    SDL_Rect enemyBox;
+    enemyBox.w = int(enemy.frameW * spriteScale);
+    enemyBox.h = int(enemy.frameH * spriteScale);
+    enemyBox.x = int(enemy.x - enemyBox.w / 2);
+    enemyBox.y = int(enemy.y - enemyBox.h);
+
+    // --- hitbox serang arah kanan / kiri sesuai facing ---
+    const int baseW = 80, baseH = 40, offset = 20, up = 60;
+    SDL_Rect attackBox;
+    attackBox.w = int(baseW * spriteScale);
+    attackBox.h = int(baseH * spriteScale);
+    attackBox.y = int(player.y - up * spriteScale);
+
+    if (playerFacingRight) {
+        attackBox.x = int(player.x + offset * spriteScale);
+    } else {
+        attackBox.x = int(player.x - offset * spriteScale - attackBox.w);
+    }
+
+    bool overlap = !( attackBox.x + attackBox.w < enemyBox.x ||
+                      attackBox.x > enemyBox.x + enemyBox.w ||
+                      attackBox.y + attackBox.h < enemyBox.y ||
+                      attackBox.y > enemyBox.y + enemyBox.h );
+
+    if (overlap) {
+        enemyHP -= playerAttackDamage;
+        if (enemyHP < 0) enemyHP = 0;
+        hasHitThisSwing = true;
+        std::cout << "[Hit] " << playerName << " memukul! HP musuh: " << enemyHP << "\n";
+    }
+}
+
+void DuelScene::drawHealthBar(SDL_Renderer* renderer,
+                              TextRenderer* text,
+                              int x, int y,
+                              int w, int h,
+                              int hp,
+                              int hpMax,
+                              const char* label,
+                              SDL_Color barColor,
+                              SDL_Color borderColor,
+                              SDL_Color textColor)
+{
+    if (hp < 0) hp = 0;
+    if (hp > hpMax) hp = hpMax;
+
+    SDL_Rect borderRect { x, y, w, h };
+
+    SDL_SetRenderDrawColor(renderer,
+        borderColor.r,
+        borderColor.g,
+        borderColor.b,
+        borderColor.a);
+    SDL_RenderDrawRect(renderer, &borderRect);
+
+    float ratio = (hpMax > 0) ? (float)hp / (float)hpMax : 0.0f;
+    int fillW = (int)(w * ratio);
+
+    SDL_Rect fillRect { x+1, y+1, fillW-2 < 0 ? 0 : fillW-2, h-2 };
+
+    SDL_SetRenderDrawColor(renderer,
+        barColor.r,
+        barColor.g,
+        barColor.b,
+        barColor.a);
+    SDL_RenderFillRect(renderer, &fillRect);
+
+    std::string hpText = std::string(label) + ": " +
+                         std::to_string(hp) + "/" + std::to_string(hpMax);
+
+    text->drawText(renderer,
+        hpText,
+        x,
+        y - 22,
+        textColor);
+}
+
+void DuelScene::render(SDL_Renderer* renderer, TextRenderer* text) {
+    int winW = 800, winH = 480;
+    if (gamePtr) gamePtr->getWindowSize(winW, winH);
+
+    // layout responsif
+    float groundY = winH * 0.84f;
+    float spriteScale = std::clamp(winH / 720.0f, 1.0f, 2.4f);
+
+    // jaga posisi relatif
+    player.y = groundY;
+    enemy.y  = groundY;
+
+    updateFacing();
+
+    SDL_SetRenderDrawColor(renderer, 20, 60, 20, 255);
+    SDL_RenderClear(renderer);
+
+    // ===== PLAYER =====
+    if (player.texture) {
+        SDL_Rect src;
+        SDL_Rect dst;
+        dst.w = int(player.frameW * spriteScale);
+        dst.h = int(player.frameH * spriteScale);
+
+        // Pilih texture & frame berdasarkan state
+        SDL_Texture* tex = nullptr;
+        if (player.attacking) {
+            // ATTACK: pakai sheet serang (sudah ada)
+            tex = player.texture;
+            src = { player.currentFrame * player.frameW, 0, player.frameW, player.frameH };
+        } else if (jumping && playerJumpTex) {
+            // JUMP: pakai sheet lompat
+            tex = playerJumpTex;
+            src = { jumpCurrentFrame * jumpFrameW, 0, jumpFrameW, jumpFrameH };
+            // ukuran dst ikut ukuran jump sheet
+            dst.w = int(jumpFrameW * spriteScale);
+            dst.h = int(jumpFrameH * spriteScale);
+        } else {
+            // IDLE: gunakan frame 0 dari sheet serang sebagai idle fallback
+            tex = player.texture;
+            src = { 0, 0, player.frameW, player.frameH };
+        }
+
+        // posisi (Y sudah diatur di movement/jump update)
+        dst.x = int(player.x - dst.w / 2);
+        dst.y = int(player.y - dst.h);
+
+        SDL_RenderCopyEx(renderer, tex, &src, &dst, 0.0, nullptr,
+                        playerFacingRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
+    }
+
+
+    // ===== ENEMY =====
+    if (enemy.texture && enemyAlive) {
+        SDL_Rect srcE;                   // <-- deklarasi DI SINI
+        srcE.x = 0;
+        srcE.y = 0;
+        srcE.w = enemy.frameW;
+        srcE.h = enemy.frameH;
+
+        SDL_Rect dstE;
+        dstE.w = int(enemy.frameW * spriteScale);
+        dstE.h = int(enemy.frameH * spriteScale);
+        dstE.x = int(enemy.x - dstE.w / 2);
+        dstE.y = int(enemy.y - dstE.h);
+
+        SDL_RenderCopyEx(renderer, enemy.texture, &srcE, &dstE,
+                 0.0, nullptr,
+                 enemyFacingRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
+
+    }
+
+    // ===== HP bars (tetap) =====
+    const int barWidth = 250, barHeight = 20, marginTop = 50, marginSide = 40;
+
+    drawHealthBar(renderer, text,
+                  marginSide, marginTop, barWidth, barHeight,
+                  player.hp, player.maxHP, playerName.c_str(),
+                  SDL_Color{50,200,50,255}, SDL_Color{255,255,255,255}, SDL_Color{255,255,255,255});
+
+    drawHealthBar(renderer, text,
+                  winW - marginSide - barWidth, marginTop, barWidth, barHeight,
+                  enemyHP, enemyMaxHP, "Musuh",
+                  SDL_Color{200,50,50,255}, SDL_Color{255,255,255,255}, SDL_Color{255,255,255,255});
+
+    // ===== bantuan kontrol =====
+    int instrY = winH - 100;
+    text->drawText(renderer, "[LEFT/RIGHT] Gerak", 20, instrY, SDL_Color{220,220,220,255});
+    text->drawText(renderer, "[A] Serang", 20, instrY+24, SDL_Color{220,220,220,255});
+    text->drawText(renderer,"[W/SPACE] Lompat",20,instrY + 96,SDL_Color{220,220,220,255});
+    text->drawText(renderer, "[ENTER] Akhiri duel jika musuh tumbang", 20, instrY+48, SDL_Color{220,220,220,255});
+    text->drawText(renderer, "[ESC] Mundur & kembali ke menu", 20, instrY+72, SDL_Color{220,220,220,255});
+
+    text->drawText(renderer, "Duel!", winW/2 - 20, 10, SDL_Color{255,255,255,255});
+}
+
