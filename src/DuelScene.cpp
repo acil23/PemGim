@@ -81,20 +81,19 @@ void DuelScene::onEnter(Game* game) {
 
     // --- Load sprite player jump (5 frame) ---
     {
-        SDL_Surface* surf = IMG_Load("../assets/images/jump.png"); // simpan jump.png ke path ini
-        if (!surf) {
-            std::cerr << "[DuelScene] Failed to load jump.png: " << IMG_GetError() << "\n";
+        SDL_Surface* s = IMG_Load("../assets/images/jump3.png");
+        if (!s) {
+            std::cerr << "[DuelScene] load player_jump.png fail: " << IMG_GetError() << "\n";
         } else {
-            playerJumpTex = SDL_CreateTextureFromSurface(gamePtr->getRenderer(), surf);
-            jumpFrameCount = 5;                 // sesuai spritesheet-mu
-            jumpFrameW = surf->w / jumpFrameCount;
-            jumpFrameH = surf->h;
-            SDL_FreeSurface(surf);
+            playerJumpTex = SDL_CreateTextureFromSurface(gamePtr->getRenderer(), s);
+            jumpFrameCount = 5;
+            jumpFrameW = s->w / jumpFrameCount;
+            jumpFrameH = s->h;
+            SDL_FreeSurface(s);
         }
-        jumping = false;
-        jumpCurrentFrame = 0;
-        jumpTimer = 0.0f;
+        jumping = false; jumpCurrentFrame = 0; jumpTimer = 0.0f;
     }
+
 
     // letakkan player di kiri tanah
     player.x = winW * 0.25f;
@@ -252,45 +251,41 @@ void DuelScene::updatePlayerAttack(float dt) {
     checkHitAndDamageEnemy();
 }
 
-void DuelScene::startPlayerJump() {
-    if (!playerJumpTex) return;  // safety
-    jumping = true;
-    jumpTimer = 0.0f;
-    jumpCurrentFrame = 0;
-}
-
-// Offset Y per frame (negatif = naik), frame ke-3 = puncak
-// Nilai akan di-“scale” sesuai tinggi layar biar proporsional fullscreen/windowed.
-static int JUMP_FRAME_OFFSETS[5] = { 0, -12, -24, -12, 0 };
-
-void DuelScene::updatePlayerJump(float dt) {
-    if (!jumping) return;
-
-    // advance timer
-    jumpTimer += dt;
-
-    // hitung ukuran layar untuk scaling offset
-    int winW = 800, winH = 480;
-    if (gamePtr) gamePtr->getWindowSize(winW, winH);
-    float spriteScale = std::clamp(winH / 720.0f, 1.0f, 2.4f);
-    float groundY = winH * 0.84f;
-
-    // tentukan frame
-    int idx = (int)(jumpTimer / jumpFrameDuration);
-    if (idx >= jumpFrameCount) {
-        // selesai lompat -> kembali idle di tanah
-        jumping = false;
-        jumpCurrentFrame = 0;
+    void DuelScene::startPlayerJump() {
+        if (!playerJumpTex) return;
+        jumping = true;
         jumpTimer = 0.0f;
-        player.y = groundY;
-        return;
+        jumpCurrentFrame = 0;
     }
-    jumpCurrentFrame = idx;
 
-    // set posisi Y berdasarkan frame offset
-    int baseOffset = JUMP_FRAME_OFFSETS[jumpCurrentFrame];
-    player.y = groundY + baseOffset * spriteScale;
-}
+    void DuelScene::updatePlayerJump(float dt) {
+        if (!jumping) return;
+
+        jumpTimer += dt;
+
+        int idx = (int)(jumpTimer / jumpFrameDuration);
+        if (idx >= jumpFrameCount) {
+            jumping = false;
+            jumpTimer = 0.0f;
+            jumpCurrentFrame = 0;
+            jumpYOffset = 0;              // balik ke normal
+            return;
+        }
+        jumpCurrentFrame = idx;
+
+        // --- offset visual per frame (0..4) ---
+        // target: frame-3 paling tinggi.
+        // angka ini masih di-"scale" sesuai tinggi layar.
+        static const int OFFS[5] = { 0, -10, -28, -10, 0 };
+
+        int winW = 800, winH = 480;
+        if (gamePtr) gamePtr->getWindowSize(winW, winH);
+        float spriteScale = std::clamp(winH / 720.0f, 1.0f, 2.4f);
+
+        jumpYOffset = int(OFFS[jumpCurrentFrame] * spriteScale);
+    }
+
+
 
 
 void DuelScene::checkHitAndDamageEnemy() {
@@ -397,38 +392,31 @@ void DuelScene::render(SDL_Renderer* renderer, TextRenderer* text) {
 
     // ===== PLAYER =====
     if (player.texture) {
-        SDL_Rect src;
-        SDL_Rect dst;
+        SDL_Rect src; SDL_Rect dst;
         dst.w = int(player.frameW * spriteScale);
         dst.h = int(player.frameH * spriteScale);
 
-        // Pilih texture & frame berdasarkan state
         SDL_Texture* tex = nullptr;
-        if (player.attacking) {
-            // ATTACK: pakai sheet serang (sudah ada)
+
+        if (player.attacking) {                 // ATTACK
             tex = player.texture;
             src = { player.currentFrame * player.frameW, 0, player.frameW, player.frameH };
-        } else if (jumping && playerJumpTex) {
-            // JUMP: pakai sheet lompat
+        } else if (jumping && playerJumpTex) {  // JUMP (anim only)
             tex = playerJumpTex;
             src = { jumpCurrentFrame * jumpFrameW, 0, jumpFrameW, jumpFrameH };
-            // ukuran dst ikut ukuran jump sheet
             dst.w = int(jumpFrameW * spriteScale);
             dst.h = int(jumpFrameH * spriteScale);
-        } else {
-            // IDLE: gunakan frame 0 dari sheet serang sebagai idle fallback
+        } else {                                // IDLE (fallback frame 0 dari attack sheet)
             tex = player.texture;
             src = { 0, 0, player.frameW, player.frameH };
         }
 
-        // posisi (Y sudah diatur di movement/jump update)
         dst.x = int(player.x - dst.w / 2);
-        dst.y = int(player.y - dst.h);
+        dst.y = int(player.y - dst.h);         // Y tidak diubah oleh jump
 
         SDL_RenderCopyEx(renderer, tex, &src, &dst, 0.0, nullptr,
                         playerFacingRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
     }
-
 
     // ===== ENEMY =====
     if (enemy.texture && enemyAlive) {

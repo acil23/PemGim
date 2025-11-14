@@ -76,8 +76,9 @@ private:
     bool jumping = false;
     int  jumpCurrentFrame = 0;
     float jumpTimer = 0.0f;
-    float jumpFrameDuration = 0.07f; // detik per frame
+    float jumpFrameDuration = 0.12f; // detik per frame
     int  jumpFrameCount = 5;
+    int jumpYOffset = 0; 
     // Tekstur jump (spritesheet 5 frame) & ukurannya
     SDL_Texture* playerJumpTex = nullptr;
     int jumpFrameW = 0;

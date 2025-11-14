@@ -14,19 +14,19 @@ void CharacterSelectScene::onEnter(Game* game) {
     // --- 1. definisi kandidat karakter ---
     // Catatan stat (sementara bisa kamu tuning lagi)
     candidates[0] = ChosenCharacterData{
-        "Ali bin Abi Thalib",
+        "Char 1",
         90,     // maxHP lebih kecil tapi serang tinggi
         20,     // baseAttack
         0       // frame index di spritesheet
     };
     candidates[1] = ChosenCharacterData{
-        "Hamzah bin Abdul Muthalib",
+        "Char 2",
         110,    // maxHP besar (tank)
         18,     // baseAttack
         1
     };
     candidates[2] = ChosenCharacterData{
-        "Ubaidah bin Harits",
+        "Char 3",
         100,    // balanced
         16,     // baseAttack
         2
