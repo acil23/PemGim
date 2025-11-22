@@ -83,6 +83,28 @@ private:
     SDL_Texture* playerJumpTex = nullptr;
     int jumpFrameW = 0;
     int jumpFrameH = 0;
+
+    // --- Walk animation ---
+    SDL_Texture* playerWalkTex = nullptr;
+    int walkFrameW = 0;
+    int walkFrameH = 0;
+    int walkFrameCount = 5;     
+    int walkCurrentFrame = 0;
+    float walkTimer = 0.0f;
+    float walkFrameDuration = 0.09f; // 9-11 ms per frame = halus, atur selera
+
+    // --- Block animation ---
+    SDL_Texture* playerBlockTex = nullptr;
+    int blockFrameW = 0;
+    int blockFrameH = 0;
+    int blockFrameCount = 3;
+    int blockCurrentFrame = 0;
+    float blockTimer = 0.0f;
+    float blockFrameDuration = 0.10f; // 0.1 s per frame -> agak pelan
+
+    bool blocking = false;
+    bool blockForward = true; // untuk anim ping-pong 0-1-2-1-0
+
     // helper
     void drawHealthBar(SDL_Renderer* renderer,
                        TextRenderer* text,
@@ -103,4 +125,9 @@ private:
     // Helper
     void startPlayerJump();
     void updatePlayerJump(float dt);
+    void updatePlayerWalk(float dt);
+
+    void startBlock();
+    void stopBlock();
+    void updateBlock(float dt);
 };

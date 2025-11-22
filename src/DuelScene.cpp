@@ -94,6 +94,41 @@ void DuelScene::onEnter(Game* game) {
         jumping = false; jumpCurrentFrame = 0; jumpTimer = 0.0f;
     }
 
+    // --- Load sprite player walk (6 frame) ---
+    {
+        SDL_Surface* s = IMG_Load("../assets/images/walk3.png"); // simpan walk.png ke path ini
+        if (!s) {
+            std::cerr << "[DuelScene] Failed to load player_walk.png: " << IMG_GetError() << "\n";
+        } else {
+            playerWalkTex = SDL_CreateTextureFromSurface(gamePtr->getRenderer(), s);
+            walkFrameCount = 5;                 // sesuai sheet yang kamu kirim
+            walkFrameW = s->w / walkFrameCount;
+            walkFrameH = s->h;
+            SDL_FreeSurface(s);
+        }
+        walkCurrentFrame = 0;
+        walkTimer = 0.0f;
+    }
+
+    // --- Load sprite player block (3 frame) ---
+    {
+        SDL_Surface* s = IMG_Load("../assets/images/block2.png"); // simpan block.png ke path ini
+        if (!s) {
+            std::cerr << "[DuelScene] Failed to load player_block.png: "
+                    << IMG_GetError() << "\n";
+        } else {
+            playerBlockTex = SDL_CreateTextureFromSurface(gamePtr->getRenderer(), s);
+            blockFrameCount = 3;
+            blockFrameW = s->w / blockFrameCount;
+            blockFrameH = s->h;
+            SDL_FreeSurface(s);
+        }
+        blocking = false;
+        blockCurrentFrame = 0;
+        blockTimer = 0.0f;
+        blockForward = true;
+    }
+
 
     // letakkan player di kiri tanah
     player.x = winW * 0.25f;
@@ -142,17 +177,21 @@ void DuelScene::handleEvent(const SDL_Event& e) {
         }
         else if (key == SDLK_a) {
             // mulai animasi serangan (kalau belum menyerang)
-            if (!player.attacking) {
+            if (!player.attacking && !jumping && !blocking) {
                 startPlayerAttack();
             }
         }
         else if (key == SDLK_w || key == SDLK_SPACE) {
-            if (!jumping && !player.attacking) {
+            if (!jumping && !player.attacking && !blocking) {
                 startPlayerJump();
             }
+        }else if (key == SDLK_s) {
+            // mulai block kalau tidak sedang attack/jump
+            if (!player.attacking && !jumping) {
+                startBlock();
+            }
         }
-    }
-    else if (e.type == SDL_KEYUP) {
+    }else if (e.type == SDL_KEYUP) {
         SDL_Keycode key = e.key.keysym.sym;
 
         if (key == SDLK_LEFT) {
@@ -160,6 +199,8 @@ void DuelScene::handleEvent(const SDL_Event& e) {
         }
         else if (key == SDLK_RIGHT) {
             moveRight = false;
+        }else if (key == SDLK_s) {
+            stopBlock();
         }
     }
 }
@@ -179,6 +220,8 @@ void DuelScene::update(float dt) {
     updatePlayerAttack(dt);
 
     updatePlayerJump(dt);
+    updatePlayerWalk(dt);
+    updateBlock(dt);
 
     // cek kalau musuh udah habis HP
     if (enemyHP <= 0 && enemyAlive) {
@@ -284,6 +327,78 @@ void DuelScene::updatePlayerAttack(float dt) {
 
         jumpYOffset = int(OFFS[jumpCurrentFrame] * spriteScale);
     }
+
+    void DuelScene::updatePlayerWalk(float dt) {
+     // Jalan hanya jika: tidak menyerang, tidak lompat, dan ada input gerak
+        bool walkingNow = (!player.attacking && !jumping && (moveLeft || moveRight));
+
+        if (!walkingNow) {
+            // reset ke frame 0 saat berhenti
+            walkCurrentFrame = 0;
+            walkTimer = 0.0f;
+            return;
+        }
+
+        walkTimer += dt;
+        if (walkTimer >= walkFrameDuration) {
+            walkTimer -= walkFrameDuration;
+            walkCurrentFrame = (walkCurrentFrame + 1) % walkFrameCount;
+        }
+    }
+
+
+    void DuelScene::startBlock() {
+        if (!playerBlockTex) return;
+        blocking = true;
+        blockTimer = 0.0f;
+        blockCurrentFrame = 0;
+        blockForward = true;
+    }
+
+    void DuelScene::stopBlock() {
+        blocking = false;
+        blockTimer = 0.0f;
+        blockCurrentFrame = 0;
+    }
+    static const int BLOCK_HOLD_FRAME = 1; // frame tengah yang mau ditahan
+    void DuelScene::updateBlock(float dt) {
+        if (!playerBlockTex) return;
+
+        blockTimer += dt;
+
+        if (blocking) {
+            // Saat tombol S masih ditekan:
+            // Naikkan animasi dari 0 -> BLOCK_HOLD_FRAME, lalu tahan di situ.
+            if (blockCurrentFrame < BLOCK_HOLD_FRAME) {
+                if (blockTimer >= blockFrameDuration) {
+                    blockTimer -= blockFrameDuration;
+                    blockCurrentFrame++;
+                    if (blockCurrentFrame > BLOCK_HOLD_FRAME) {
+                        blockCurrentFrame = BLOCK_HOLD_FRAME;
+                    }
+                }
+            } else {
+                // Sudah sampai frame hold -> tetap di sana
+                blockCurrentFrame = BLOCK_HOLD_FRAME;
+            }
+        } else {
+            // S sudah dilepas:
+            // Kalau masih di atas 0, animasikan turun pelan ke 0.
+            if (blockCurrentFrame > 0) {
+                if (blockTimer >= blockFrameDuration) {
+                    blockTimer -= blockFrameDuration;
+                    blockCurrentFrame--;
+                    if (blockCurrentFrame < 0) blockCurrentFrame = 0;
+                }
+            } else {
+                // sudah kembali ke frame 0, reset timer saja
+                blockTimer = 0.0f;
+            }
+        }
+    }
+
+
+
 
 
 
@@ -392,31 +507,61 @@ void DuelScene::render(SDL_Renderer* renderer, TextRenderer* text) {
 
     // ===== PLAYER =====
     if (player.texture) {
-        SDL_Rect src; SDL_Rect dst;
+        SDL_Texture* tex = nullptr;
+        SDL_Rect src{}, dst{};
+
+        int winW = 800, winH = 480;
+        if (gamePtr) gamePtr->getWindowSize(winW, winH);
+        float spriteScale = std::clamp(winH / 720.0f, 1.0f, 2.4f);
+
+        // default size
         dst.w = int(player.frameW * spriteScale);
         dst.h = int(player.frameH * spriteScale);
 
-        SDL_Texture* tex = nullptr;
-
-        if (player.attacking) {                 // ATTACK
-            tex = player.texture;
+        // PRIORITAS: ATTACK > JUMP > BLOCK > WALK > IDLE
+        if (player.attacking) {
+            tex = player.texture; // attack sheet
             src = { player.currentFrame * player.frameW, 0, player.frameW, player.frameH };
-        } else if (jumping && playerJumpTex) {  // JUMP (anim only)
+        }
+        else if (jumping && playerJumpTex) {
             tex = playerJumpTex;
             src = { jumpCurrentFrame * jumpFrameW, 0, jumpFrameW, jumpFrameH };
             dst.w = int(jumpFrameW * spriteScale);
             dst.h = int(jumpFrameH * spriteScale);
-        } else {                                // IDLE (fallback frame 0 dari attack sheet)
-            tex = player.texture;
+        }
+        else if (blocking && playerBlockTex) {
+            tex = playerBlockTex;
+            src = { blockCurrentFrame * blockFrameW, 0, blockFrameW, blockFrameH };
+            dst.w = int(blockFrameW * spriteScale);
+            dst.h = int(blockFrameH * spriteScale);
+        }
+        else if ((moveLeft || moveRight) && playerWalkTex) {
+            tex = playerWalkTex;
+            src = { walkCurrentFrame * walkFrameW, 0, walkFrameW, walkFrameH };
+            dst.w = int(walkFrameW * spriteScale);
+            dst.h = int(walkFrameH * spriteScale);
+        }
+        else {
+            tex = player.texture; // idle
             src = { 0, 0, player.frameW, player.frameH };
         }
 
         dst.x = int(player.x - dst.w / 2);
-        dst.y = int(player.y - dst.h);         // Y tidak diubah oleh jump
+        int extraY = (jumping ? jumpYOffset : 0);
+        dst.y = int(player.y - dst.h + extraY);
 
-        SDL_RenderCopyEx(renderer, tex, &src, &dst, 0.0, nullptr,
-                        playerFacingRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
+        SDL_RenderCopyEx(
+            renderer,
+            tex,
+            &src,
+            &dst,
+            0.0,
+            nullptr,
+            playerFacingRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL
+        );
     }
+
+
 
     // ===== ENEMY =====
     if (enemy.texture && enemyAlive) {
