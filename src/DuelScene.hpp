@@ -63,6 +63,16 @@ private:
     int enemyMaxHP;
     bool enemyAlive;
     bool hasHitThisSwing = false;
+    
+    // enemy attack
+    SDL_Texture* enemyAttackTex = nullptr;
+    int enemyAttackFrameW = 0;
+    int enemyAttackFrameH = 0;
+    int enemyAttackFrameCount = 5;
+    float enemyAttackCooldown = 1.0f; // attack every 1 second
+    float enemyAttackTimer = 0.0f;
+    bool hasEnemyHitThisSwing = false;
+    int enemyAttackDamage = 12;
 
     bool playerFacingRight = true;
     bool enemyFacingRight  = false;
@@ -122,6 +132,10 @@ private:
     void updatePlayerAttack(float dt);
     void updateFacing();
     void checkHitAndDamageEnemy();
+    
+    void startEnemyAttack();
+    void updateEnemyAttack(float dt);
+    void checkEnemyHitAndDamagePlayer();
     // Helper
     void startPlayerJump();
     void updatePlayerJump(float dt);

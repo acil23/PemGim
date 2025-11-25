@@ -14,17 +14,20 @@ void DuelScene::onEnter(Game* game) {
     enemyAlive = true;
 
     // Ambil data karakter terpilih dari Game
+    int selectedCharID = 0; // default char 1
     if (gamePtr) {
         const auto& ch = gamePtr->getChosenCharacter();
         playerName          = ch.displayName;
         player.hp           = ch.maxHP;
         player.maxHP        = ch.maxHP;
         playerAttackDamage  = ch.baseAttack;
+        selectedCharID      = ch.characterID;
     } else {
         playerName          = "Pejuang";
         player.hp           = 100;
         player.maxHP        = 100;
         playerAttackDamage  = 15;
+        selectedCharID      = 0;
     }
 
     // Musuh
@@ -41,9 +44,16 @@ void DuelScene::onEnter(Game* game) {
 
     // --- Load sprite player (spritesheet serangan) ---
     {
-        SDL_Surface* surf = IMG_Load("../assets/images/player_attack.png");
+        // Build filename based on character ID
+        std::string attackFile = "../assets/images/player_attack";
+        if (selectedCharID > 0) {
+            attackFile += std::to_string(selectedCharID + 1); // char 0->player_attack.png, 1->player_attack2.png, 2->player_attack3.png
+        }
+        attackFile += ".png";
+        
+        SDL_Surface* surf = IMG_Load(attackFile.c_str());
         if (!surf) {
-            std::cerr << "[DuelScene] Failed to load player_attack.png: " << IMG_GetError() << "\n";
+            std::cerr << "[DuelScene] Failed to load " << attackFile << ": " << IMG_GetError() << "\n";
         } else {
             player.texture = SDL_CreateTextureFromSurface(gamePtr->getRenderer(), surf);
 
@@ -79,11 +89,32 @@ void DuelScene::onEnter(Game* game) {
         }
     }
 
+    // --- Load sprite enemy attack (5 frame) ---
+    {
+        SDL_Surface* surf = IMG_Load("../assets/images/enemy_attack.png");
+        if (!surf) {
+            std::cerr << "[DuelScene] Failed to load enemy_attack.png: " << IMG_GetError() << "\n";
+        } else {
+            enemyAttackTex = SDL_CreateTextureFromSurface(gamePtr->getRenderer(), surf);
+            enemyAttackFrameCount = 5;
+            enemyAttackFrameW = surf->w / enemyAttackFrameCount;
+            enemyAttackFrameH = surf->h;
+            SDL_FreeSurface(surf);
+        }
+    }
+    enemyAttackTimer = enemyAttackCooldown; // start ready to attack
+
     // --- Load sprite player jump (5 frame) ---
     {
-        SDL_Surface* s = IMG_Load("../assets/images/jump3.png");
+        std::string jumpFile = "../assets/images/jump";
+        if (selectedCharID > 0) {
+            jumpFile += std::to_string(selectedCharID + 1);
+        }
+        jumpFile += ".png";
+        
+        SDL_Surface* s = IMG_Load(jumpFile.c_str());
         if (!s) {
-            std::cerr << "[DuelScene] load player_jump.png fail: " << IMG_GetError() << "\n";
+            std::cerr << "[DuelScene] load " << jumpFile << " fail: " << IMG_GetError() << "\n";
         } else {
             playerJumpTex = SDL_CreateTextureFromSurface(gamePtr->getRenderer(), s);
             jumpFrameCount = 5;
@@ -96,9 +127,15 @@ void DuelScene::onEnter(Game* game) {
 
     // --- Load sprite player walk (6 frame) ---
     {
-        SDL_Surface* s = IMG_Load("../assets/images/walk3.png"); // simpan walk.png ke path ini
+        std::string walkFile = "../assets/images/walk";
+        if (selectedCharID > 0) {
+            walkFile += std::to_string(selectedCharID + 1);
+        }
+        walkFile += ".png";
+        
+        SDL_Surface* s = IMG_Load(walkFile.c_str()); // simpan walk.png ke path ini
         if (!s) {
-            std::cerr << "[DuelScene] Failed to load player_walk.png: " << IMG_GetError() << "\n";
+            std::cerr << "[DuelScene] Failed to load " << walkFile << ": " << IMG_GetError() << "\n";
         } else {
             playerWalkTex = SDL_CreateTextureFromSurface(gamePtr->getRenderer(), s);
             walkFrameCount = 5;                 // sesuai sheet yang kamu kirim
@@ -112,9 +149,15 @@ void DuelScene::onEnter(Game* game) {
 
     // --- Load sprite player block (3 frame) ---
     {
-        SDL_Surface* s = IMG_Load("../assets/images/block2.png"); // simpan block.png ke path ini
+        std::string blockFile = "../assets/images/block";
+        if (selectedCharID > 0) {
+            blockFile += std::to_string(selectedCharID + 1);
+        }
+        blockFile += ".png";
+        
+        SDL_Surface* s = IMG_Load(blockFile.c_str()); // simpan block.png ke path ini
         if (!s) {
-            std::cerr << "[DuelScene] Failed to load player_block.png: "
+            std::cerr << "[DuelScene] Failed to load " << blockFile << ": "
                     << IMG_GetError() << "\n";
         } else {
             playerBlockTex = SDL_CreateTextureFromSurface(gamePtr->getRenderer(), s);
@@ -222,6 +265,9 @@ void DuelScene::update(float dt) {
     updatePlayerJump(dt);
     updatePlayerWalk(dt);
     updateBlock(dt);
+    
+    // enemy attack logic
+    updateEnemyAttack(dt);
 
     // cek kalau musuh udah habis HP
     if (enemyHP <= 0 && enemyAlive) {
@@ -564,23 +610,38 @@ void DuelScene::render(SDL_Renderer* renderer, TextRenderer* text) {
 
 
     // ===== ENEMY =====
-    if (enemy.texture && enemyAlive) {
-        SDL_Rect srcE;                   // <-- deklarasi DI SINI
-        srcE.x = 0;
-        srcE.y = 0;
-        srcE.w = enemy.frameW;
-        srcE.h = enemy.frameH;
-
+    if (enemyAlive) {
+        SDL_Texture* enemyTex = nullptr;
+        SDL_Rect srcE;
         SDL_Rect dstE;
-        dstE.w = int(enemy.frameW * spriteScale);
-        dstE.h = int(enemy.frameH * spriteScale);
-        dstE.x = int(enemy.x - dstE.w / 2);
-        dstE.y = int(enemy.y - dstE.h);
-
-        SDL_RenderCopyEx(renderer, enemy.texture, &srcE, &dstE,
-                 0.0, nullptr,
-                 enemyFacingRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
-
+        
+        // Choose texture based on attack state
+        if (enemy.attacking && enemyAttackTex) {
+            enemyTex = enemyAttackTex;
+            srcE.x = enemy.currentFrame * enemyAttackFrameW;
+            srcE.y = 0;
+            srcE.w = enemyAttackFrameW;
+            srcE.h = enemyAttackFrameH;
+            dstE.w = int(enemyAttackFrameW * spriteScale);
+            dstE.h = int(enemyAttackFrameH * spriteScale);
+        } else if (enemy.texture) {
+            enemyTex = enemy.texture;
+            srcE.x = 0;
+            srcE.y = 0;
+            srcE.w = enemy.frameW;
+            srcE.h = enemy.frameH;
+            dstE.w = int(enemy.frameW * spriteScale);
+            dstE.h = int(enemy.frameH * spriteScale);
+        }
+        
+        if (enemyTex) {
+            dstE.x = int(enemy.x - dstE.w / 2);
+            dstE.y = int(enemy.y - dstE.h);
+            
+            SDL_RenderCopyEx(renderer, enemyTex, &srcE, &dstE,
+                     0.0, nullptr,
+                     enemyFacingRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
+        }
     }
 
     // ===== HP bars (tetap) =====
@@ -605,5 +666,91 @@ void DuelScene::render(SDL_Renderer* renderer, TextRenderer* text) {
     text->drawText(renderer, "[ESC] Mundur & kembali ke menu", 20, instrY+72, SDL_Color{220,220,220,255});
 
     text->drawText(renderer, "Duel!", winW/2 - 20, 10, SDL_Color{255,255,255,255});
+}
+
+void DuelScene::startEnemyAttack() {
+    if (!enemyAlive) return;
+    enemy.attacking = true;
+    enemy.attackTimer = 0.0f;
+    enemy.currentFrame = 1;
+    hasEnemyHitThisSwing = false;
+    std::cout << "[Enemy] Musuh menyerang!\n";
+}
+
+void DuelScene::updateEnemyAttack(float dt) {
+    if (!enemyAlive) return;
+    
+    // cooldown timer for attacks
+    if (!enemy.attacking) {
+        enemyAttackTimer += dt;
+        if (enemyAttackTimer >= enemyAttackCooldown) {
+            enemyAttackTimer = 0.0f;
+            startEnemyAttack();
+        }
+        return;
+    }
+    
+    // update attack animation
+    enemy.attackTimer += dt;
+    int frameIndex = (int)(enemy.attackTimer / enemy.attackFrameDuration);
+    
+    if (frameIndex >= enemyAttackFrameCount) {
+        enemy.attacking = false;
+        enemy.currentFrame = 0;
+        return;
+    } else {
+        enemy.currentFrame = frameIndex;
+    }
+    
+    // check if enemy hit player
+    checkEnemyHitAndDamagePlayer();
+}
+
+void DuelScene::checkEnemyHitAndDamagePlayer() {
+    if (hasEnemyHitThisSwing) return;
+    if (blocking) {
+        // player is blocking, no damage
+        if (!hasEnemyHitThisSwing) {
+            std::cout << "[Blocked] Kamu berhasil memblokir serangan!\n";
+            hasEnemyHitThisSwing = true;
+        }
+        return;
+    }
+    
+    int winW = 800, winH = 480;
+    if (gamePtr) gamePtr->getWindowSize(winW, winH);
+    float spriteScale = std::clamp(winH / 720.0f, 1.0f, 2.4f);
+    
+    // player hitbox
+    SDL_Rect playerBox;
+    playerBox.w = int(player.frameW * spriteScale);
+    playerBox.h = int(player.frameH * spriteScale);
+    playerBox.x = int(player.x - playerBox.w / 2);
+    playerBox.y = int(player.y - playerBox.h);
+    
+    // enemy attack hitbox (mirrored from player attack)
+    const int baseW = 80, baseH = 40, offset = 20, up = 60;
+    SDL_Rect attackBox;
+    attackBox.w = int(baseW * spriteScale);
+    attackBox.h = int(baseH * spriteScale);
+    attackBox.y = int(enemy.y - up * spriteScale);
+    
+    if (enemyFacingRight) {
+        attackBox.x = int(enemy.x + offset * spriteScale);
+    } else {
+        attackBox.x = int(enemy.x - offset * spriteScale - attackBox.w);
+    }
+    
+    bool overlap = !( attackBox.x + attackBox.w < playerBox.x ||
+                      attackBox.x > playerBox.x + playerBox.w ||
+                      attackBox.y + attackBox.h < playerBox.y ||
+                      attackBox.y > playerBox.y + playerBox.h );
+    
+    if (overlap) {
+        player.hp -= enemyAttackDamage;
+        if (player.hp < 0) player.hp = 0;
+        hasEnemyHitThisSwing = true;
+        std::cout << "[Hit] Musuh memukul! HP kamu: " << player.hp << "\n";
+    }
 }
 
