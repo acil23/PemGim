@@ -10,6 +10,7 @@ struct ChosenCharacterData {
     int baseAttack;
     // nanti bisa tambah sprite rect / texture ID dsb
     int spriteIndex; // 0 = kiri (putih), 1 = tengah (biru), 2 = kanan (merah)
+    int characterID; // 0, 1, or 2 for which character asset to use
 };
 
 

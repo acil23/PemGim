@@ -17,19 +17,22 @@ void CharacterSelectScene::onEnter(Game* game) {
         "Char 1",
         90,     // maxHP lebih kecil tapi serang tinggi
         20,     // baseAttack
-        0       // frame index di spritesheet
+        0,      // frame index di spritesheet
+        0       // characterID (uses player_attack.png)
     };
     candidates[1] = ChosenCharacterData{
         "Char 2",
         110,    // maxHP besar (tank)
         18,     // baseAttack
-        1
+        1,
+        1       // characterID (uses player_attack2.png)
     };
     candidates[2] = ChosenCharacterData{
         "Char 3",
         100,    // balanced
         16,     // baseAttack
-        2
+        2,
+        2       // characterID (uses player_attack3.png)
     };
 
     // --- 2. load texture spritesheet (choose.png) ---
