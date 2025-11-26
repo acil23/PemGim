@@ -55,7 +55,7 @@ bool Game::init(const std::string& title, int width, int height, bool fullscreen
     Mix_AllocateChannels(16);
     
     // Set volume to 50%
-    Mix_VolumeMusic(MIX_MAX_VOLUME / 4);
+    Mix_VolumeMusic(MIX_MAX_VOLUME / 20);  // 5% volume
     Mix_Volume(-1, MIX_MAX_VOLUME / 2);
 
 

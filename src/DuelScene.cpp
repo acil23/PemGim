@@ -772,6 +772,9 @@ void DuelScene::checkEnemyHitAndDamagePlayer() {
         // player is blocking, no damage
         if (!hasEnemyHitThisSwing) {
             std::cout << "[Blocked] Kamu berhasil memblokir serangan!\n";
+        if (gamePtr) {
+            gamePtr->playSound("../assets/sounds/sword_block_sound.wav");
+        }
             hasEnemyHitThisSwing = true;
         }
         return;
