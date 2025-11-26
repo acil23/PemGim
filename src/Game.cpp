@@ -1,6 +1,7 @@
 #include "Game.hpp"
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include <iostream>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -35,6 +36,28 @@ bool Game::init(const std::string& title, int width, int height, bool fullscreen
         std::cerr << "[SDL_ttf] Init failed: " << TTF_GetError() << "\n";
         return false;
     }
+    
+    // Initialize SDL_mixer for audio
+    if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 1024) < 0) {
+        std::cerr << "[SDL_mixer] Init failed: " << Mix_GetError() << "\n";
+        return false;
+    }
+    
+    // Check what audio decoders are available
+    int numDecoders = Mix_GetNumMusicDecoders();
+    std::cout << "[SDL_mixer] Available music decoders: ";
+    for (int i = 0; i < numDecoders; i++) {
+        std::cout << Mix_GetMusicDecoder(i) << " ";
+    }
+    std::cout << "\n";
+    
+    // Allocate mixing channels for sound effects
+    Mix_AllocateChannels(16);
+    
+    // Set volume to 50%
+    Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
+    Mix_Volume(-1, MIX_MAX_VOLUME / 2);
+
 
     Uint32 flags = SDL_WINDOW_SHOWN;
     if (fullscreen) {
@@ -165,6 +188,22 @@ void Game::shutdown() {
         window = nullptr;
     }
 
+    
+    // Clean up audio resources
+    if (currentMusic) {
+        Mix_FreeMusic(currentMusic);
+        currentMusic = nullptr;
+    }
+    
+    for (auto& pair : soundEffects) {
+        if (pair.second) {
+            Mix_FreeChunk(pair.second);
+        }
+    }
+    soundEffects.clear();
+    
+    Mix_CloseAudio();
+    
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
