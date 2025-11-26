@@ -200,4 +200,4 @@ void StoryScene::render(SDL_Renderer* renderer, TextRenderer* text) {
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 200);
         SDL_RenderFillRect(renderer, &timerBar);
     }
-}~
+}
