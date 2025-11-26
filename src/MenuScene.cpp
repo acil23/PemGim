@@ -71,6 +71,11 @@ void MenuScene::switchState(MenuState newState) {
 
 void MenuScene::onEnter(Game* game) {
     gamePtr = game;
+    
+    // Stop any music when entering menu
+    if (gamePtr) {
+        gamePtr->stopMusic();
+    }
     change = false;
     next = "";
     
