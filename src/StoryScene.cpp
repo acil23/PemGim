@@ -47,7 +47,7 @@ void StoryScene::onEnter(Game* game) {
     
     // Play story music only if not already playing
     if (gamePtr && !Mix_PlayingMusic()) {
-        gamePtr->playMusic("../assets/sounds/story_song.ogg", -1);
+        gamePtr->playMusic("../assets/sounds/story_song.wav", -1);
     }
 }
 
