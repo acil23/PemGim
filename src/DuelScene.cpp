@@ -12,7 +12,7 @@ void DuelScene::onEnter(Game* game) {
     // Play fight music
     if (gamePtr) {
         gamePtr->stopMusic();
-        gamePtr->playMusic("assets/sounds/fight_song.ogg", -1);
+        gamePtr->playMusic("../assets/sounds/fight_song.ogg", -1);
     }
     change = false;
     next = "";
@@ -275,7 +275,7 @@ void DuelScene::startPlayerAttack() {
     
     // Play sword sound
     if (gamePtr) {
-        gamePtr->playSound("assets/sounds/sword_sound.ogg");
+        gamePtr->playSound("../assets/sounds/sword_sound.ogg");
     }
 }
 
@@ -384,7 +384,7 @@ void DuelScene::updatePlayerAttack(float dt) {
         
         // Play jump sound
         if (gamePtr) {
-            gamePtr->playSound("assets/sounds/jump.ogg");
+            gamePtr->playSound("../assets/sounds/jump.ogg");
         }
     }
 

@@ -36,6 +36,7 @@ CMakeFiles/sejarah-rpg.dir/src/BadarIntroScene.cpp.o: /home/waz/Game/src/BadarIn
   /usr/include/SDL2/SDL_messagebox.h \
   /usr/include/SDL2/SDL_metal.h \
   /usr/include/SDL2/SDL_misc.h \
+  /usr/include/SDL2/SDL_mixer.h \
   /usr/include/SDL2/SDL_mouse.h \
   /usr/include/SDL2/SDL_mutex.h \
   /usr/include/SDL2/SDL_pixels.h \
@@ -81,6 +82,7 @@ CMakeFiles/sejarah-rpg.dir/src/BadarIntroScene.cpp.o: /home/waz/Game/src/BadarIn
   /usr/include/c++/13/bits/cpp_type_traits.h \
   /usr/include/c++/13/bits/cxxabi_forced.h \
   /usr/include/c++/13/bits/cxxabi_init_exception.h \
+  /usr/include/c++/13/bits/erase_if.h \
   /usr/include/c++/13/bits/exception.h \
   /usr/include/c++/13/bits/exception_defines.h \
   /usr/include/c++/13/bits/exception_ptr.h \
@@ -100,6 +102,7 @@ CMakeFiles/sejarah-rpg.dir/src/BadarIntroScene.cpp.o: /home/waz/Game/src/BadarIn
   /usr/include/c++/13/bits/move.h \
   /usr/include/c++/13/bits/nested_exception.h \
   /usr/include/c++/13/bits/new_allocator.h \
+  /usr/include/c++/13/bits/node_handle.h \
   /usr/include/c++/13/bits/ostream.tcc \
   /usr/include/c++/13/bits/ostream_insert.h \
   /usr/include/c++/13/bits/postypes.h \
@@ -120,9 +123,12 @@ CMakeFiles/sejarah-rpg.dir/src/BadarIntroScene.cpp.o: /home/waz/Game/src/BadarIn
   /usr/include/c++/13/bits/stl_iterator.h \
   /usr/include/c++/13/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/13/bits/stl_iterator_base_types.h \
+  /usr/include/c++/13/bits/stl_map.h \
+  /usr/include/c++/13/bits/stl_multimap.h \
   /usr/include/c++/13/bits/stl_pair.h \
   /usr/include/c++/13/bits/stl_raw_storage_iter.h \
   /usr/include/c++/13/bits/stl_tempbuf.h \
+  /usr/include/c++/13/bits/stl_tree.h \
   /usr/include/c++/13/bits/stl_uninitialized.h \
   /usr/include/c++/13/bits/stl_vector.h \
   /usr/include/c++/13/bits/streambuf.tcc \
@@ -159,6 +165,7 @@ CMakeFiles/sejarah-rpg.dir/src/BadarIntroScene.cpp.o: /home/waz/Game/src/BadarIn
   /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
   /usr/include/c++/13/limits \
+  /usr/include/c++/13/map \
   /usr/include/c++/13/math.h \
   /usr/include/c++/13/memory \
   /usr/include/c++/13/new \
@@ -431,6 +438,7 @@ CMakeFiles/sejarah-rpg.dir/src/CharacterSelectScene.cpp.o: /home/waz/Game/src/Ch
   /usr/include/SDL2/SDL_messagebox.h \
   /usr/include/SDL2/SDL_metal.h \
   /usr/include/SDL2/SDL_misc.h \
+  /usr/include/SDL2/SDL_mixer.h \
   /usr/include/SDL2/SDL_mouse.h \
   /usr/include/SDL2/SDL_mutex.h \
   /usr/include/SDL2/SDL_pixels.h \
@@ -477,6 +485,7 @@ CMakeFiles/sejarah-rpg.dir/src/CharacterSelectScene.cpp.o: /home/waz/Game/src/Ch
   /usr/include/c++/13/bits/cpp_type_traits.h \
   /usr/include/c++/13/bits/cxxabi_forced.h \
   /usr/include/c++/13/bits/cxxabi_init_exception.h \
+  /usr/include/c++/13/bits/erase_if.h \
   /usr/include/c++/13/bits/exception.h \
   /usr/include/c++/13/bits/exception_defines.h \
   /usr/include/c++/13/bits/exception_ptr.h \
@@ -496,6 +505,7 @@ CMakeFiles/sejarah-rpg.dir/src/CharacterSelectScene.cpp.o: /home/waz/Game/src/Ch
   /usr/include/c++/13/bits/move.h \
   /usr/include/c++/13/bits/nested_exception.h \
   /usr/include/c++/13/bits/new_allocator.h \
+  /usr/include/c++/13/bits/node_handle.h \
   /usr/include/c++/13/bits/ostream.tcc \
   /usr/include/c++/13/bits/ostream_insert.h \
   /usr/include/c++/13/bits/postypes.h \
@@ -516,9 +526,12 @@ CMakeFiles/sejarah-rpg.dir/src/CharacterSelectScene.cpp.o: /home/waz/Game/src/Ch
   /usr/include/c++/13/bits/stl_iterator.h \
   /usr/include/c++/13/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/13/bits/stl_iterator_base_types.h \
+  /usr/include/c++/13/bits/stl_map.h \
+  /usr/include/c++/13/bits/stl_multimap.h \
   /usr/include/c++/13/bits/stl_pair.h \
   /usr/include/c++/13/bits/stl_raw_storage_iter.h \
   /usr/include/c++/13/bits/stl_tempbuf.h \
+  /usr/include/c++/13/bits/stl_tree.h \
   /usr/include/c++/13/bits/stl_uninitialized.h \
   /usr/include/c++/13/bits/stl_vector.h \
   /usr/include/c++/13/bits/streambuf.tcc \
@@ -556,6 +569,7 @@ CMakeFiles/sejarah-rpg.dir/src/CharacterSelectScene.cpp.o: /home/waz/Game/src/Ch
   /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
   /usr/include/c++/13/limits \
+  /usr/include/c++/13/map \
   /usr/include/c++/13/math.h \
   /usr/include/c++/13/memory \
   /usr/include/c++/13/new \
@@ -1204,6 +1218,7 @@ CMakeFiles/sejarah-rpg.dir/src/DuelScene.cpp.o: /home/waz/Game/src/DuelScene.cpp
   /usr/include/SDL2/SDL_messagebox.h \
   /usr/include/SDL2/SDL_metal.h \
   /usr/include/SDL2/SDL_misc.h \
+  /usr/include/SDL2/SDL_mixer.h \
   /usr/include/SDL2/SDL_mouse.h \
   /usr/include/SDL2/SDL_mutex.h \
   /usr/include/SDL2/SDL_pixels.h \
@@ -1251,6 +1266,7 @@ CMakeFiles/sejarah-rpg.dir/src/DuelScene.cpp.o: /home/waz/Game/src/DuelScene.cpp
   /usr/include/c++/13/bits/cpp_type_traits.h \
   /usr/include/c++/13/bits/cxxabi_forced.h \
   /usr/include/c++/13/bits/cxxabi_init_exception.h \
+  /usr/include/c++/13/bits/erase_if.h \
   /usr/include/c++/13/bits/exception.h \
   /usr/include/c++/13/bits/exception_defines.h \
   /usr/include/c++/13/bits/exception_ptr.h \
@@ -1270,6 +1286,7 @@ CMakeFiles/sejarah-rpg.dir/src/DuelScene.cpp.o: /home/waz/Game/src/DuelScene.cpp
   /usr/include/c++/13/bits/move.h \
   /usr/include/c++/13/bits/nested_exception.h \
   /usr/include/c++/13/bits/new_allocator.h \
+  /usr/include/c++/13/bits/node_handle.h \
   /usr/include/c++/13/bits/ostream.tcc \
   /usr/include/c++/13/bits/ostream_insert.h \
   /usr/include/c++/13/bits/postypes.h \
@@ -1291,9 +1308,12 @@ CMakeFiles/sejarah-rpg.dir/src/DuelScene.cpp.o: /home/waz/Game/src/DuelScene.cpp
   /usr/include/c++/13/bits/stl_iterator.h \
   /usr/include/c++/13/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/13/bits/stl_iterator_base_types.h \
+  /usr/include/c++/13/bits/stl_map.h \
+  /usr/include/c++/13/bits/stl_multimap.h \
   /usr/include/c++/13/bits/stl_pair.h \
   /usr/include/c++/13/bits/stl_raw_storage_iter.h \
   /usr/include/c++/13/bits/stl_tempbuf.h \
+  /usr/include/c++/13/bits/stl_tree.h \
   /usr/include/c++/13/bits/stl_uninitialized.h \
   /usr/include/c++/13/bits/streambuf.tcc \
   /usr/include/c++/13/bits/streambuf_iterator.h \
@@ -1329,6 +1349,7 @@ CMakeFiles/sejarah-rpg.dir/src/DuelScene.cpp.o: /home/waz/Game/src/DuelScene.cpp
   /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
   /usr/include/c++/13/limits \
+  /usr/include/c++/13/map \
   /usr/include/c++/13/math.h \
   /usr/include/c++/13/memory \
   /usr/include/c++/13/new \
@@ -1600,6 +1621,7 @@ CMakeFiles/sejarah-rpg.dir/src/EndingScene.cpp.o: /home/waz/Game/src/EndingScene
   /usr/include/SDL2/SDL_messagebox.h \
   /usr/include/SDL2/SDL_metal.h \
   /usr/include/SDL2/SDL_misc.h \
+  /usr/include/SDL2/SDL_mixer.h \
   /usr/include/SDL2/SDL_mouse.h \
   /usr/include/SDL2/SDL_mutex.h \
   /usr/include/SDL2/SDL_pixels.h \
@@ -1645,6 +1667,7 @@ CMakeFiles/sejarah-rpg.dir/src/EndingScene.cpp.o: /home/waz/Game/src/EndingScene
   /usr/include/c++/13/bits/cpp_type_traits.h \
   /usr/include/c++/13/bits/cxxabi_forced.h \
   /usr/include/c++/13/bits/cxxabi_init_exception.h \
+  /usr/include/c++/13/bits/erase_if.h \
   /usr/include/c++/13/bits/exception.h \
   /usr/include/c++/13/bits/exception_defines.h \
   /usr/include/c++/13/bits/exception_ptr.h \
@@ -1664,6 +1687,7 @@ CMakeFiles/sejarah-rpg.dir/src/EndingScene.cpp.o: /home/waz/Game/src/EndingScene
   /usr/include/c++/13/bits/move.h \
   /usr/include/c++/13/bits/nested_exception.h \
   /usr/include/c++/13/bits/new_allocator.h \
+  /usr/include/c++/13/bits/node_handle.h \
   /usr/include/c++/13/bits/ostream.tcc \
   /usr/include/c++/13/bits/ostream_insert.h \
   /usr/include/c++/13/bits/postypes.h \
@@ -1683,9 +1707,12 @@ CMakeFiles/sejarah-rpg.dir/src/EndingScene.cpp.o: /home/waz/Game/src/EndingScene
   /usr/include/c++/13/bits/stl_iterator.h \
   /usr/include/c++/13/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/13/bits/stl_iterator_base_types.h \
+  /usr/include/c++/13/bits/stl_map.h \
+  /usr/include/c++/13/bits/stl_multimap.h \
   /usr/include/c++/13/bits/stl_pair.h \
   /usr/include/c++/13/bits/stl_raw_storage_iter.h \
   /usr/include/c++/13/bits/stl_tempbuf.h \
+  /usr/include/c++/13/bits/stl_tree.h \
   /usr/include/c++/13/bits/stl_uninitialized.h \
   /usr/include/c++/13/bits/streambuf.tcc \
   /usr/include/c++/13/bits/streambuf_iterator.h \
@@ -1720,6 +1747,7 @@ CMakeFiles/sejarah-rpg.dir/src/EndingScene.cpp.o: /home/waz/Game/src/EndingScene
   /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
   /usr/include/c++/13/limits \
+  /usr/include/c++/13/map \
   /usr/include/c++/13/math.h \
   /usr/include/c++/13/memory \
   /usr/include/c++/13/new \
@@ -1990,6 +2018,7 @@ CMakeFiles/sejarah-rpg.dir/src/Game.cpp.o: /home/waz/Game/src/Game.cpp \
   /usr/include/SDL2/SDL_messagebox.h \
   /usr/include/SDL2/SDL_metal.h \
   /usr/include/SDL2/SDL_misc.h \
+  /usr/include/SDL2/SDL_mixer.h \
   /usr/include/SDL2/SDL_mouse.h \
   /usr/include/SDL2/SDL_mutex.h \
   /usr/include/SDL2/SDL_pixels.h \
@@ -2035,6 +2064,7 @@ CMakeFiles/sejarah-rpg.dir/src/Game.cpp.o: /home/waz/Game/src/Game.cpp \
   /usr/include/c++/13/bits/cpp_type_traits.h \
   /usr/include/c++/13/bits/cxxabi_forced.h \
   /usr/include/c++/13/bits/cxxabi_init_exception.h \
+  /usr/include/c++/13/bits/erase_if.h \
   /usr/include/c++/13/bits/exception.h \
   /usr/include/c++/13/bits/exception_defines.h \
   /usr/include/c++/13/bits/exception_ptr.h \
@@ -2054,6 +2084,7 @@ CMakeFiles/sejarah-rpg.dir/src/Game.cpp.o: /home/waz/Game/src/Game.cpp \
   /usr/include/c++/13/bits/move.h \
   /usr/include/c++/13/bits/nested_exception.h \
   /usr/include/c++/13/bits/new_allocator.h \
+  /usr/include/c++/13/bits/node_handle.h \
   /usr/include/c++/13/bits/ostream.tcc \
   /usr/include/c++/13/bits/ostream_insert.h \
   /usr/include/c++/13/bits/postypes.h \
@@ -2073,9 +2104,12 @@ CMakeFiles/sejarah-rpg.dir/src/Game.cpp.o: /home/waz/Game/src/Game.cpp \
   /usr/include/c++/13/bits/stl_iterator.h \
   /usr/include/c++/13/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/13/bits/stl_iterator_base_types.h \
+  /usr/include/c++/13/bits/stl_map.h \
+  /usr/include/c++/13/bits/stl_multimap.h \
   /usr/include/c++/13/bits/stl_pair.h \
   /usr/include/c++/13/bits/stl_raw_storage_iter.h \
   /usr/include/c++/13/bits/stl_tempbuf.h \
+  /usr/include/c++/13/bits/stl_tree.h \
   /usr/include/c++/13/bits/stl_uninitialized.h \
   /usr/include/c++/13/bits/streambuf.tcc \
   /usr/include/c++/13/bits/streambuf_iterator.h \
@@ -2110,6 +2144,7 @@ CMakeFiles/sejarah-rpg.dir/src/Game.cpp.o: /home/waz/Game/src/Game.cpp \
   /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
   /usr/include/c++/13/limits \
+  /usr/include/c++/13/map \
   /usr/include/c++/13/math.h \
   /usr/include/c++/13/memory \
   /usr/include/c++/13/new \
@@ -2381,6 +2416,7 @@ CMakeFiles/sejarah-rpg.dir/src/MenuScene.cpp.o: /home/waz/Game/src/MenuScene.cpp
   /usr/include/SDL2/SDL_messagebox.h \
   /usr/include/SDL2/SDL_metal.h \
   /usr/include/SDL2/SDL_misc.h \
+  /usr/include/SDL2/SDL_mixer.h \
   /usr/include/SDL2/SDL_mouse.h \
   /usr/include/SDL2/SDL_mutex.h \
   /usr/include/SDL2/SDL_pixels.h \
@@ -2426,6 +2462,7 @@ CMakeFiles/sejarah-rpg.dir/src/MenuScene.cpp.o: /home/waz/Game/src/MenuScene.cpp
   /usr/include/c++/13/bits/cpp_type_traits.h \
   /usr/include/c++/13/bits/cxxabi_forced.h \
   /usr/include/c++/13/bits/cxxabi_init_exception.h \
+  /usr/include/c++/13/bits/erase_if.h \
   /usr/include/c++/13/bits/exception.h \
   /usr/include/c++/13/bits/exception_defines.h \
   /usr/include/c++/13/bits/exception_ptr.h \
@@ -2445,6 +2482,7 @@ CMakeFiles/sejarah-rpg.dir/src/MenuScene.cpp.o: /home/waz/Game/src/MenuScene.cpp
   /usr/include/c++/13/bits/move.h \
   /usr/include/c++/13/bits/nested_exception.h \
   /usr/include/c++/13/bits/new_allocator.h \
+  /usr/include/c++/13/bits/node_handle.h \
   /usr/include/c++/13/bits/ostream.tcc \
   /usr/include/c++/13/bits/ostream_insert.h \
   /usr/include/c++/13/bits/postypes.h \
@@ -2465,9 +2503,12 @@ CMakeFiles/sejarah-rpg.dir/src/MenuScene.cpp.o: /home/waz/Game/src/MenuScene.cpp
   /usr/include/c++/13/bits/stl_iterator.h \
   /usr/include/c++/13/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/13/bits/stl_iterator_base_types.h \
+  /usr/include/c++/13/bits/stl_map.h \
+  /usr/include/c++/13/bits/stl_multimap.h \
   /usr/include/c++/13/bits/stl_pair.h \
   /usr/include/c++/13/bits/stl_raw_storage_iter.h \
   /usr/include/c++/13/bits/stl_tempbuf.h \
+  /usr/include/c++/13/bits/stl_tree.h \
   /usr/include/c++/13/bits/stl_uninitialized.h \
   /usr/include/c++/13/bits/stl_vector.h \
   /usr/include/c++/13/bits/streambuf.tcc \
@@ -2504,6 +2545,7 @@ CMakeFiles/sejarah-rpg.dir/src/MenuScene.cpp.o: /home/waz/Game/src/MenuScene.cpp
   /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
   /usr/include/c++/13/limits \
+  /usr/include/c++/13/map \
   /usr/include/c++/13/math.h \
   /usr/include/c++/13/memory \
   /usr/include/c++/13/new \
@@ -2779,6 +2821,7 @@ CMakeFiles/sejarah-rpg.dir/src/SceneManager.cpp.o: /home/waz/Game/src/SceneManag
   /usr/include/SDL2/SDL_messagebox.h \
   /usr/include/SDL2/SDL_metal.h \
   /usr/include/SDL2/SDL_misc.h \
+  /usr/include/SDL2/SDL_mixer.h \
   /usr/include/SDL2/SDL_mouse.h \
   /usr/include/SDL2/SDL_mutex.h \
   /usr/include/SDL2/SDL_pixels.h \
@@ -2825,6 +2868,7 @@ CMakeFiles/sejarah-rpg.dir/src/SceneManager.cpp.o: /home/waz/Game/src/SceneManag
   /usr/include/c++/13/bits/cpp_type_traits.h \
   /usr/include/c++/13/bits/cxxabi_forced.h \
   /usr/include/c++/13/bits/cxxabi_init_exception.h \
+  /usr/include/c++/13/bits/erase_if.h \
   /usr/include/c++/13/bits/exception.h \
   /usr/include/c++/13/bits/exception_defines.h \
   /usr/include/c++/13/bits/exception_ptr.h \
@@ -2844,6 +2888,7 @@ CMakeFiles/sejarah-rpg.dir/src/SceneManager.cpp.o: /home/waz/Game/src/SceneManag
   /usr/include/c++/13/bits/move.h \
   /usr/include/c++/13/bits/nested_exception.h \
   /usr/include/c++/13/bits/new_allocator.h \
+  /usr/include/c++/13/bits/node_handle.h \
   /usr/include/c++/13/bits/ostream.tcc \
   /usr/include/c++/13/bits/ostream_insert.h \
   /usr/include/c++/13/bits/postypes.h \
@@ -2864,9 +2909,12 @@ CMakeFiles/sejarah-rpg.dir/src/SceneManager.cpp.o: /home/waz/Game/src/SceneManag
   /usr/include/c++/13/bits/stl_iterator.h \
   /usr/include/c++/13/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/13/bits/stl_iterator_base_types.h \
+  /usr/include/c++/13/bits/stl_map.h \
+  /usr/include/c++/13/bits/stl_multimap.h \
   /usr/include/c++/13/bits/stl_pair.h \
   /usr/include/c++/13/bits/stl_raw_storage_iter.h \
   /usr/include/c++/13/bits/stl_tempbuf.h \
+  /usr/include/c++/13/bits/stl_tree.h \
   /usr/include/c++/13/bits/stl_uninitialized.h \
   /usr/include/c++/13/bits/stl_vector.h \
   /usr/include/c++/13/bits/streambuf.tcc \
@@ -2904,6 +2952,7 @@ CMakeFiles/sejarah-rpg.dir/src/SceneManager.cpp.o: /home/waz/Game/src/SceneManag
   /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
   /usr/include/c++/13/limits \
+  /usr/include/c++/13/map \
   /usr/include/c++/13/math.h \
   /usr/include/c++/13/memory \
   /usr/include/c++/13/new \
@@ -3176,6 +3225,7 @@ CMakeFiles/sejarah-rpg.dir/src/StoryScene.cpp.o: /home/waz/Game/src/StoryScene.c
   /usr/include/SDL2/SDL_messagebox.h \
   /usr/include/SDL2/SDL_metal.h \
   /usr/include/SDL2/SDL_misc.h \
+  /usr/include/SDL2/SDL_mixer.h \
   /usr/include/SDL2/SDL_mouse.h \
   /usr/include/SDL2/SDL_mutex.h \
   /usr/include/SDL2/SDL_pixels.h \
@@ -3221,6 +3271,7 @@ CMakeFiles/sejarah-rpg.dir/src/StoryScene.cpp.o: /home/waz/Game/src/StoryScene.c
   /usr/include/c++/13/bits/cpp_type_traits.h \
   /usr/include/c++/13/bits/cxxabi_forced.h \
   /usr/include/c++/13/bits/cxxabi_init_exception.h \
+  /usr/include/c++/13/bits/erase_if.h \
   /usr/include/c++/13/bits/exception.h \
   /usr/include/c++/13/bits/exception_defines.h \
   /usr/include/c++/13/bits/exception_ptr.h \
@@ -3240,6 +3291,7 @@ CMakeFiles/sejarah-rpg.dir/src/StoryScene.cpp.o: /home/waz/Game/src/StoryScene.c
   /usr/include/c++/13/bits/move.h \
   /usr/include/c++/13/bits/nested_exception.h \
   /usr/include/c++/13/bits/new_allocator.h \
+  /usr/include/c++/13/bits/node_handle.h \
   /usr/include/c++/13/bits/ostream.tcc \
   /usr/include/c++/13/bits/ostream_insert.h \
   /usr/include/c++/13/bits/postypes.h \
@@ -3261,9 +3313,12 @@ CMakeFiles/sejarah-rpg.dir/src/StoryScene.cpp.o: /home/waz/Game/src/StoryScene.c
   /usr/include/c++/13/bits/stl_iterator.h \
   /usr/include/c++/13/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/13/bits/stl_iterator_base_types.h \
+  /usr/include/c++/13/bits/stl_map.h \
+  /usr/include/c++/13/bits/stl_multimap.h \
   /usr/include/c++/13/bits/stl_pair.h \
   /usr/include/c++/13/bits/stl_raw_storage_iter.h \
   /usr/include/c++/13/bits/stl_tempbuf.h \
+  /usr/include/c++/13/bits/stl_tree.h \
   /usr/include/c++/13/bits/stl_uninitialized.h \
   /usr/include/c++/13/bits/stl_vector.h \
   /usr/include/c++/13/bits/streambuf.tcc \
@@ -3300,6 +3355,7 @@ CMakeFiles/sejarah-rpg.dir/src/StoryScene.cpp.o: /home/waz/Game/src/StoryScene.c
   /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
   /usr/include/c++/13/limits \
+  /usr/include/c++/13/map \
   /usr/include/c++/13/math.h \
   /usr/include/c++/13/memory \
   /usr/include/c++/13/new \
@@ -3940,6 +3996,7 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
   /usr/include/SDL2/SDL_messagebox.h \
   /usr/include/SDL2/SDL_metal.h \
   /usr/include/SDL2/SDL_misc.h \
+  /usr/include/SDL2/SDL_mixer.h \
   /usr/include/SDL2/SDL_mouse.h \
   /usr/include/SDL2/SDL_mutex.h \
   /usr/include/SDL2/SDL_pixels.h \
@@ -3985,6 +4042,7 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
   /usr/include/c++/13/bits/cpp_type_traits.h \
   /usr/include/c++/13/bits/cxxabi_forced.h \
   /usr/include/c++/13/bits/cxxabi_init_exception.h \
+  /usr/include/c++/13/bits/erase_if.h \
   /usr/include/c++/13/bits/exception.h \
   /usr/include/c++/13/bits/exception_defines.h \
   /usr/include/c++/13/bits/exception_ptr.h \
@@ -4004,6 +4062,7 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
   /usr/include/c++/13/bits/move.h \
   /usr/include/c++/13/bits/nested_exception.h \
   /usr/include/c++/13/bits/new_allocator.h \
+  /usr/include/c++/13/bits/node_handle.h \
   /usr/include/c++/13/bits/ostream.tcc \
   /usr/include/c++/13/bits/ostream_insert.h \
   /usr/include/c++/13/bits/postypes.h \
@@ -4023,9 +4082,12 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
   /usr/include/c++/13/bits/stl_iterator.h \
   /usr/include/c++/13/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/13/bits/stl_iterator_base_types.h \
+  /usr/include/c++/13/bits/stl_map.h \
+  /usr/include/c++/13/bits/stl_multimap.h \
   /usr/include/c++/13/bits/stl_pair.h \
   /usr/include/c++/13/bits/stl_raw_storage_iter.h \
   /usr/include/c++/13/bits/stl_tempbuf.h \
+  /usr/include/c++/13/bits/stl_tree.h \
   /usr/include/c++/13/bits/stl_uninitialized.h \
   /usr/include/c++/13/bits/streambuf.tcc \
   /usr/include/c++/13/bits/streambuf_iterator.h \
@@ -4060,6 +4122,7 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
   /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
   /usr/include/c++/13/limits \
+  /usr/include/c++/13/map \
   /usr/include/c++/13/math.h \
   /usr/include/c++/13/memory \
   /usr/include/c++/13/new \
@@ -4443,8 +4506,6 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 
 /usr/include/x86_64-linux-gnu/gnu/stubs.h:
 
-/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
-
 /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/emmintrin.h:
@@ -4495,9 +4556,17 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h:
 
-/usr/include/c++/13/bits/stl_vector.h:
+/usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
 
-/usr/include/SDL2/SDL_error.h:
+/usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
 
 /usr/include/c++/13/bits/stl_tempbuf.h:
 
@@ -4506,6 +4575,10 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 /usr/include/SDL2/SDL_surface.h:
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
+
+/usr/include/c++/13/bits/stl_map.h:
+
+/usr/include/SDL2/SDL_clipboard.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/clzerointrin.h:
 
@@ -4517,13 +4590,13 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 
 /usr/include/c++/13/bits/shared_ptr_atomic.h:
 
+/usr/include/c++/13/bits/erase_if.h:
+
 /usr/include/c++/13/bits/shared_ptr.h:
 
 /usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
 
 /usr/include/c++/13/bits/refwrap.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
 
 /usr/include/c++/13/compare:
 
@@ -4559,6 +4632,10 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 
 /usr/include/errno.h:
 
+/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+
+/usr/include/c++/13/bits/node_handle.h:
+
 /usr/include/c++/13/bits/functexcept.h:
 
 /usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
@@ -4566,6 +4643,14 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 /usr/include/c++/13/bits/exception_ptr.h:
 
 /usr/include/c++/13/bits/istream.tcc:
+
+/usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
+
+/usr/include/c++/13/bits/stl_multimap.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
+
+/usr/include/c++/13/bits/charconv.h:
 
 /usr/include/c++/13/cstdio:
 
@@ -4581,12 +4666,6 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 
 /usr/include/c++/13/typeinfo:
 
-/usr/include/SDL2/SDL_keycode.h:
-
-/usr/include/c++/13/ostream:
-
-/usr/include/c++/13/tr1/riemann_zeta.tcc:
-
 /usr/lib/gcc/x86_64-linux-gnu/13/include/avxvnniintrin.h:
 
 /usr/include/c++/13/bits/cpp_type_traits.h:
@@ -4594,14 +4673,6 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 /usr/lib/gcc/x86_64-linux-gnu/13/include/avx512ifmavlintrin.h:
 
 /usr/include/x86_64-linux-gnu/bits/types.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/13/include/avx512erintrin.h:
-
-/usr/include/c++/13/bits/streambuf.tcc:
-
-/usr/include/c++/13/bits/specfun.h:
 
 /usr/include/c++/13/bits/basic_string.h:
 
@@ -4634,6 +4705,14 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 /usr/include/c++/13/bits/alloc_traits.h:
 
 /usr/include/c++/13/bits/atomic_base.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/include/wbnoinvdintrin.h:
+
+/usr/include/c++/13/bits/stl_uninitialized.h:
+
+/usr/include/SDL2/SDL_thread.h:
+
+/usr/include/c++/13/bits/new_allocator.h:
 
 /usr/include/c++/13/bits/uses_allocator_args.h:
 
@@ -4669,9 +4748,25 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 
 /usr/include/asm-generic/errno-base.h:
 
+/usr/include/c++/13/bits/basic_string.tcc:
+
+/usr/include/c++/13/bits/allocated_ptr.h:
+
+/usr/include/c++/13/bit:
+
+/usr/include/alloca.h:
+
+/usr/include/c++/13/array:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/include/clflushoptintrin.h:
+
+/home/waz/Game/src/DialogueBox.hpp:
+
 /usr/include/c++/13/bits/stl_bvector.h:
 
 /home/waz/Game/src/BadarIntroScene.cpp:
+
+/usr/include/SDL2/SDL_mixer.h:
 
 /usr/include/SDL2/SDL_joystick.h:
 
@@ -4695,9 +4790,11 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 
 /usr/include/SDL2/SDL_haptic.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
+/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
+/usr/include/c++/13/bits/string_view.tcc:
+
+/usr/include/SDL2/SDL_guid.h:
 
 /usr/include/SDL2/SDL_sensor.h:
 
@@ -4712,16 +4809,6 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
 
 /usr/include/c++/13/tr1/legendre_function.tcc:
-
-/usr/include/SDL2/SDL_clipboard.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/13/include/wbnoinvdintrin.h:
-
-/usr/include/SDL2/SDL_thread.h:
-
-/usr/include/c++/13/bits/new_allocator.h:
-
-/usr/include/c++/13/bits/stl_uninitialized.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/timer_t.h:
 
@@ -4747,10 +4834,6 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
 
-/usr/include/c++/13/bits/charconv.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
-
 /home/waz/Game/src/CharacterSelectScene.cpp:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/pmmintrin.h:
@@ -4769,29 +4852,9 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 
 /usr/include/SDL2/SDL_loadso.h:
 
-/usr/include/c++/13/array:
-
-/usr/lib/gcc/x86_64-linux-gnu/13/include/clflushoptintrin.h:
-
-/home/waz/Game/src/DialogueBox.hpp:
-
-/usr/include/alloca.h:
-
-/usr/include/c++/13/bits/allocated_ptr.h:
-
-/usr/include/c++/13/bit:
-
-/usr/include/c++/13/bits/basic_string.tcc:
-
 /usr/include/x86_64-linux-gnu/c++/13/bits/ctype_base.h:
 
 /home/waz/Game/src/Game.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
-
-/usr/include/SDL2/SDL_guid.h:
-
-/usr/include/c++/13/bits/string_view.tcc:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/cmpccxaddintrin.h:
 
@@ -4816,6 +4879,10 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 /usr/lib/gcc/x86_64-linux-gnu/13/include/xmmintrin.h:
 
 /usr/include/SDL2/SDL_mouse.h:
+
+/usr/include/SDL2/SDL_error.h:
+
+/usr/include/c++/13/bits/stl_vector.h:
 
 /usr/include/c++/13/bits/predefined_ops.h:
 
@@ -4851,10 +4918,6 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 
 /usr/include/c++/13/bits/localefwd.h:
 
-/usr/include/c++/13/bits/streambuf_iterator.h:
-
-/usr/include/x86_64-linux-gnu/bits/flt-eval-method.h:
-
 /usr/include/SDL2/SDL_messagebox.h:
 
 /usr/include/SDL2/SDL_log.h:
@@ -4876,6 +4939,16 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 /usr/lib/gcc/x86_64-linux-gnu/13/include/smmintrin.h:
 
 /usr/include/SDL2/SDL_platform.h:
+
+/usr/include/SDL2/SDL_keycode.h:
+
+/usr/include/x86_64-linux-gnu/bits/flt-eval-method.h:
+
+/usr/include/c++/13/bits/streambuf_iterator.h:
+
+/usr/include/c++/13/ostream:
+
+/usr/include/c++/13/tr1/riemann_zeta.tcc:
 
 /usr/include/SDL2/SDL_blendmode.h:
 
@@ -4916,6 +4989,14 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 /usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
 
 /usr/include/SDL2/SDL_timer.h:
+
+/usr/include/c++/13/bits/stl_tree.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/include/avx512erintrin.h:
+
+/usr/include/c++/13/bits/specfun.h:
+
+/usr/include/c++/13/bits/streambuf.tcc:
 
 /usr/include/c++/13/bits/stringfwd.h:
 
@@ -5097,6 +5178,8 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/fp-logb.h:
 
+/usr/include/c++/13/map:
+
 /usr/include/c++/13/string_view:
 
 /usr/include/x86_64-linux-gnu/bits/iscanonical.h:
@@ -5110,8 +5193,6 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 /usr/include/time.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/gthr-default.h:
 
@@ -5132,7 +5213,3 @@ CMakeFiles/sejarah-rpg.dir/src/main.cpp.o: /home/waz/Game/src/main.cpp \
 /usr/include/c++/13/bits/locale_classes.h:
 
 /usr/include/x86_64-linux-gnu/bits/timesize.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:
