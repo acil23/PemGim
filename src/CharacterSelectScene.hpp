@@ -2,22 +2,15 @@
 #include "Scene.hpp"
 #include <string>
 #include <array>
-#include "Game.hpp" // for ChosenCharacterData
+#include <vector> // Perlu vector untuk layouting
+#include "Game.hpp" 
 
 class CharacterSelectScene : public Scene {
 public:
-    CharacterSelectScene()
-        : gamePtr(nullptr),
-          change(false),
-          nextScene(""),
-          selectedIndex(0),
-          chooseTexture(nullptr),
-          frameW(64),
-          frameH(64)
-    {}
+    CharacterSelectScene();
 
     void onEnter(Game* game) override;
-    void onExit() override {}
+    void onExit() override;
 
     void handleEvent(const SDL_Event& e) override;
     void update(float deltaTime) override;
@@ -27,16 +20,26 @@ public:
     const char* nextSceneName() const override { return nextScene.c_str(); }
 
 private:
-    Game* gamePtr;
+    Game* gamePtr = nullptr;
     bool change;
     std::string nextScene;
 
-    int selectedIndex; // 0 = Ali?, 1 = Hamzah?, 2 = Ubaidah?
+    int selectedIndex; 
 
-    SDL_Texture* chooseTexture;
+    // Resources
+    SDL_Texture* chooseTexture = nullptr; // Spritesheet karakter
+    SDL_Texture* bgTexture = nullptr;     // Background gurun
+    
+    // Dimensi Frame per karakter di spritesheet
     int frameW;
     int frameH;
 
-    // Data kandidat karakter
+    // Data kandidat
     std::array<ChosenCharacterData,3> candidates;
+
+    // Animasi
+    float timeAccumulator = 0.0f; // Untuk animasi naik turun (bobbing)
+
+    // Helper untuk UI
+    void drawPanel(SDL_Renderer* renderer, int x, int y, int w, int h);
 };

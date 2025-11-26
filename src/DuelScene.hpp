@@ -105,6 +105,9 @@ private:
     bool blocking = false;
     bool blockForward = true; // untuk anim ping-pong 0-1-2-1-0
 
+    bool isGameOver = false; // Flag baru
+    bool playerWon = false;
+
     // helper
     void drawHealthBar(SDL_Renderer* renderer,
                        TextRenderer* text,

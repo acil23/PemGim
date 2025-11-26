@@ -33,8 +33,8 @@ void DuelScene::onEnter(Game* game) {
 
     // Posisi awal (kita taruh di ground kira2)
     // Nanti kita ambil window size buat penempatan musuh
-    int winW = 800;
-    int winH = 480;
+    int winW = 1280;
+    int winH = 720;
     if (gamePtr) {
         gamePtr->getWindowSize(winW, winH);
     }
@@ -203,6 +203,19 @@ void DuelScene::handleEvent(const SDL_Event& e) {
             stopBlock();
         }
     }
+
+    if (isGameOver) {
+        if (e.type == SDL_KEYDOWN) {
+             if (e.key.keysym.sym == SDLK_RETURN) {
+                 change = true;
+                 next = "post_duel_story"; // Baik menang/kalah, lihat cerita asli
+             } else if (e.key.keysym.sym == SDLK_ESCAPE) {
+                 change = true;
+                 next = "menu";
+             }
+        }
+        return; // Stop input lain (gerak/serang)
+    }
 }
 
 void DuelScene::startPlayerAttack() {
@@ -223,19 +236,31 @@ void DuelScene::update(float dt) {
     updatePlayerWalk(dt);
     updateBlock(dt);
 
-    // cek kalau musuh udah habis HP
+    // Cek Menang
     if (enemyHP <= 0 && enemyAlive) {
-        enemyHP = 0;
         enemyAlive = false;
-        std::cout << "[Duel] Musuh kalah!\n";
+        isGameOver = true;
+        playerWon = true;
+    }
+    // Cek Kalah
+    if (player.hp <= 0 && !isGameOver) {
+        isGameOver = true;
+        playerWon = false;
     }
 
-    // cek kalau player jatuh (HP <= 0)
-    if (player.hp <= 0) {
-        std::cout << "[Duel] Kamu tumbang! (sementara langsung ending)\n";
-        change = true;
-        next = "ending";
-    }
+    // // cek kalau musuh udah habis HP
+    // if (enemyHP <= 0 && enemyAlive) {
+    //     enemyHP = 0;
+    //     enemyAlive = false;
+    //     std::cout << "[Duel] Musuh kalah!\n";
+    // }
+
+    // // cek kalau player jatuh (HP <= 0)
+    // if (player.hp <= 0) {
+    //     std::cout << "[Duel] Kamu tumbang! (sementara langsung ending)\n";
+    //     change = true;
+    //     next = "ending";
+    // }
 }
 
 void DuelScene::updatePlayerMovement(float dt) {
@@ -245,7 +270,7 @@ void DuelScene::updatePlayerMovement(float dt) {
         if (moveRight) dx += playerSpeed * dt;
         player.x += dx;
 
-        int winW = 800, winH = 480;
+        int winW = 1280, winH = 720;
         if (gamePtr) gamePtr->getWindowSize(winW, winH);
 
         float spriteScale = std::clamp(winH / 720.0f, 1.0f, 2.4f);
@@ -321,7 +346,7 @@ void DuelScene::updatePlayerAttack(float dt) {
         // angka ini masih di-"scale" sesuai tinggi layar.
         static const int OFFS[5] = { 0, -10, -28, -10, 0 };
 
-        int winW = 800, winH = 480;
+        int winW = 1280, winH = 720;
         if (gamePtr) gamePtr->getWindowSize(winW, winH);
         float spriteScale = std::clamp(winH / 720.0f, 1.0f, 2.4f);
 
@@ -407,7 +432,7 @@ void DuelScene::checkHitAndDamageEnemy() {
     if (!enemyAlive) return;
     if (hasHitThisSwing) return;
 
-    int winW = 800, winH = 480;
+    int winW = 1280, winH = 720;
     if (gamePtr) gamePtr->getWindowSize(winW, winH);
     float spriteScale = std::clamp(winH / 720.0f, 1.0f, 2.4f);
 
@@ -489,7 +514,7 @@ void DuelScene::drawHealthBar(SDL_Renderer* renderer,
 }
 
 void DuelScene::render(SDL_Renderer* renderer, TextRenderer* text) {
-    int winW = 800, winH = 480;
+    int winW = 1280, winH = 720;
     if (gamePtr) gamePtr->getWindowSize(winW, winH);
 
     // layout responsif
@@ -510,7 +535,7 @@ void DuelScene::render(SDL_Renderer* renderer, TextRenderer* text) {
         SDL_Texture* tex = nullptr;
         SDL_Rect src{}, dst{};
 
-        int winW = 800, winH = 480;
+        int winW = 1280, winH = 720;
         if (gamePtr) gamePtr->getWindowSize(winW, winH);
         float spriteScale = std::clamp(winH / 720.0f, 1.0f, 2.4f);
 
@@ -581,6 +606,25 @@ void DuelScene::render(SDL_Renderer* renderer, TextRenderer* text) {
                  0.0, nullptr,
                  enemyFacingRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
 
+    }
+
+    if (isGameOver) {
+        // Gelapkan layar
+        SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 200);
+        SDL_Rect full = {0,0,winW,winH};
+        SDL_RenderFillRect(renderer, &full);
+
+        text->setFontSize(48);
+        if (playerWon) {
+            text->drawText(renderer, "MENANG!", winW/2 - 100, winH/2 - 50, {0, 255, 0, 255});
+            text->setFontSize(24);
+            text->drawText(renderer, "[ENTER] Lanjut Cerita", winW/2 - 120, winH/2 + 20, {255,255,255,255});
+        } else {
+            text->drawText(renderer, "TERLUKA PARAH...", winW/2 - 150, winH/2 - 50, {255, 0, 0, 255});
+            text->setFontSize(24);
+            text->drawText(renderer, "[ENTER] Lihat Kisah Asli  [ESC] Menu", winW/2 - 180, winH/2 + 20, {255,255,255,255});
+        }
     }
 
     // ===== HP bars (tetap) =====

@@ -6,7 +6,8 @@ int main(int argc, char* argv[]) {
     (void)argv;
 
     Game game;
-    if (!game.init("Sejarah RPG - Perang Badar", 800, 480, false)) {
+    // UBAH DI SINI: Ganti 1280, 720 menjadi 1280, 720
+    if (!game.init("Sejarah RPG - Perang Badar", 1280, 720, false)) {
         std::cerr << "Game init failed\n";
         return 1;
     }

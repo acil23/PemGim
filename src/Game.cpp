@@ -120,7 +120,6 @@ void Game::processEvents() {
     }
 }
 
-
 void Game::update(float deltaTime) {
     auto* scene = sceneManager.getCurrentScene();
     if (!scene) {
@@ -132,9 +131,15 @@ void Game::update(float deltaTime) {
 
     if (scene->wantsSceneChange()) {
         const char* nextName = scene->nextSceneName();
-        if (nextName) {
+        
+        // --- PERBAIKAN DI SINI ---
+        // Cek: Apakah pointer valid DAN huruf pertamanya bukan null terminator?
+        if (nextName && nextName[0] != '\0') {
+            // Kalau namanya ada isinya (misal "duel"), ganti scene
             sceneManager.changeScene(nextName);
         } else {
+            // Kalau string kosong (""), artinya Quit Game
+            std::cout << "[Game] Sinyal keluar diterima. Shutting down...\n";
             running = false;
         }
     }
@@ -173,8 +178,9 @@ void Game::toggleFullscreen() {
         SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
     } else {
         SDL_SetWindowFullscreen(window, 0);
-        // optional: balikin ke ukuran default
-        SDL_SetWindowSize(window, 800, 480);
+        
+        // UBAH DI SINI JUGA: Samakan dengan main.cpp (1280, 720)
+        SDL_SetWindowSize(window, 1280, 720);
         SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     }
 }

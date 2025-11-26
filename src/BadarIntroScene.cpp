@@ -64,8 +64,8 @@ void BadarIntroScene::render(SDL_Renderer* renderer, TextRenderer* text) {
     if (gamePtr) {
         gamePtr->getWindowSize(winW, winH);
     } else {
-        winW = 800;
-        winH = 480;
+        winW = 1280;
+        winH = 720;
     }
 
     // background merah gelap

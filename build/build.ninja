@@ -129,6 +129,14 @@ build CMakeFiles/sejarah-rpg.dir/src/CharacterSelectScene.cpp.o: CXX_COMPILER__s
   OBJECT_DIR = CMakeFiles/sejarah-rpg.dir
   OBJECT_FILE_DIR = CMakeFiles/sejarah-rpg.dir/src
 
+build CMakeFiles/sejarah-rpg.dir/src/StoryScene.cpp.o: CXX_COMPILER__sejarah-rpg_unscanned_Debug /home/aklein/Documents/PemGim/project-game/src/StoryScene.cpp || cmake_object_order_depends_target_sejarah-rpg
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/sejarah-rpg.dir/src/StoryScene.cpp.o.d
+  FLAGS = -g -std=gnu++17
+  INCLUDES = -I/usr/include/SDL2 -I/usr/include/libpng16 -I/usr/include/rav1e -I/usr/include/svt-av1 -I/usr/include/webp -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include -I/usr/include/sysprof-6 -I/usr/include/freetype2 -I/home/aklein/Documents/PemGim/project-game/src
+  OBJECT_DIR = CMakeFiles/sejarah-rpg.dir
+  OBJECT_FILE_DIR = CMakeFiles/sejarah-rpg.dir/src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target sejarah-rpg
@@ -137,7 +145,7 @@ build CMakeFiles/sejarah-rpg.dir/src/CharacterSelectScene.cpp.o: CXX_COMPILER__s
 #############################################
 # Link the executable sejarah-rpg
 
-build sejarah-rpg: CXX_EXECUTABLE_LINKER__sejarah-rpg_Debug CMakeFiles/sejarah-rpg.dir/src/main.cpp.o CMakeFiles/sejarah-rpg.dir/src/Game.cpp.o CMakeFiles/sejarah-rpg.dir/src/SceneManager.cpp.o CMakeFiles/sejarah-rpg.dir/src/MenuScene.cpp.o CMakeFiles/sejarah-rpg.dir/src/BadarIntroScene.cpp.o CMakeFiles/sejarah-rpg.dir/src/DuelScene.cpp.o CMakeFiles/sejarah-rpg.dir/src/EndingScene.cpp.o CMakeFiles/sejarah-rpg.dir/src/TextRenderer.cpp.o CMakeFiles/sejarah-rpg.dir/src/DialogueBox.cpp.o CMakeFiles/sejarah-rpg.dir/src/CharacterSelectScene.cpp.o
+build sejarah-rpg: CXX_EXECUTABLE_LINKER__sejarah-rpg_Debug CMakeFiles/sejarah-rpg.dir/src/main.cpp.o CMakeFiles/sejarah-rpg.dir/src/Game.cpp.o CMakeFiles/sejarah-rpg.dir/src/SceneManager.cpp.o CMakeFiles/sejarah-rpg.dir/src/MenuScene.cpp.o CMakeFiles/sejarah-rpg.dir/src/BadarIntroScene.cpp.o CMakeFiles/sejarah-rpg.dir/src/DuelScene.cpp.o CMakeFiles/sejarah-rpg.dir/src/EndingScene.cpp.o CMakeFiles/sejarah-rpg.dir/src/TextRenderer.cpp.o CMakeFiles/sejarah-rpg.dir/src/DialogueBox.cpp.o CMakeFiles/sejarah-rpg.dir/src/CharacterSelectScene.cpp.o CMakeFiles/sejarah-rpg.dir/src/StoryScene.cpp.o
   CONFIG = Debug
   DEP_FILE = CMakeFiles/sejarah-rpg.dir/link.d
   FLAGS = -g

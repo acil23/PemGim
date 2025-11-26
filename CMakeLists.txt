@@ -36,6 +36,7 @@ add_executable(sejarah-rpg
     src/TextRenderer.cpp
     src/DialogueBox.cpp
     src/CharacterSelectScene.cpp
+    src/StoryScene.cpp
 )
 
 target_link_libraries(sejarah-rpg
