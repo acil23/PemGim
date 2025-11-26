@@ -8,12 +8,6 @@
 
 void DuelScene::onEnter(Game* game) {
     gamePtr = game;
-    
-    // Play fight music
-    if (gamePtr) {
-        gamePtr->stopMusic();
-        gamePtr->playMusic("assets/sounds/fight_song.ogg", -1);
-    }
     change = false;
     next = "";
 
@@ -272,11 +266,6 @@ void DuelScene::startPlayerAttack() {
     player.attackTimer = 0.0f;
     player.currentFrame = 1; // mulai di frame serang, bukan idle 0
     hasHitThisSwing = false; 
-    
-    // Play sword sound
-    if (gamePtr) {
-        gamePtr->playSound("assets/sounds/sword_sound.ogg");
-    }
 }
 
 void DuelScene::update(float dt) {
@@ -381,11 +370,6 @@ void DuelScene::updatePlayerAttack(float dt) {
         jumping = true;
         jumpTimer = 0.0f;
         jumpCurrentFrame = 0;
-        
-        // Play jump sound
-        if (gamePtr) {
-            gamePtr->playSound("assets/sounds/jump.ogg");
-        }
     }
 
     void DuelScene::updatePlayerJump(float dt) {

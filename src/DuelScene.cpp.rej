@@ -1,0 +1,16 @@
+--- src/DuelScene.cpp
++++ src/DuelScene.cpp
+@@ -9,6 +9,12 @@
+ void DuelScene::onEnter(Game* game) {
+     gamePtr = game;
++    
++    // Play fight music
++    if (gamePtr) {
++        gamePtr->stopMusic();
++        gamePtr->playMusic("assets/sounds/fight_song.ogg", -1);
++    }
++    
+     change = false;
+     next = "";
+ 
+--- a/src/StoryScene.cpp

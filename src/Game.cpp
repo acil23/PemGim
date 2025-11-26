@@ -190,3 +190,57 @@ void Game::getWindowSize(int& w, int& h) {
     SDL_GetWindowSize(window, &w, &h);
 }
 
+
+void Game::playMusic(const std::string& path, int loops) {
+    // Stop current music
+    if (currentMusic) {
+        Mix_HaltMusic();
+        Mix_FreeMusic(currentMusic);
+        currentMusic = nullptr;
+    }
+    
+    std::cout << "[Audio] Loading music: " << path << "\n";
+    
+    // Load new music
+    currentMusic = Mix_LoadMUS(path.c_str());
+    if (!currentMusic) {
+        std::cerr << "[Audio] Failed to load music: " << path << " - " << Mix_GetError() << "\n";
+        return;
+    }
+    
+    // Play music (loops: -1 = infinite, 0 = once, 1+ = that many times)
+    if (Mix_PlayMusic(currentMusic, loops) == -1) {
+        std::cerr << "[Audio] Failed to play music: " << Mix_GetError() << "\n";
+    } else {
+        std::cout << "[Audio] Playing music successfully\n";
+    }
+}
+
+void Game::stopMusic() {
+    if (Mix_PlayingMusic()) {
+        Mix_HaltMusic();
+    }
+    if (currentMusic) {
+        Mix_FreeMusic(currentMusic);
+        currentMusic = nullptr;
+    }
+}
+
+void Game::playSound(const std::string& path) {
+    // Check if sound is already loaded
+    if (soundEffects.find(path) == soundEffects.end()) {
+        std::cout << "[Audio] Loading sound: " << path << "\n";
+        // Load sound effect
+        Mix_Chunk* chunk = Mix_LoadWAV(path.c_str());
+        if (!chunk) {
+            std::cerr << "[Audio] Failed to load sound: " << path << " - " << Mix_GetError() << "\n";
+            return;
+        }
+        soundEffects[path] = chunk;
+    }
+    
+    // Play sound effect on any available channel
+    if (Mix_PlayChannel(-1, soundEffects[path], 0) == -1) {
+        std::cerr << "[Audio] Failed to play sound: " << Mix_GetError() << "\n";
+    }
+}
