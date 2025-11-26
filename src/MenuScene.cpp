@@ -24,7 +24,7 @@ MenuScene::MenuScene() : change(false), next("") {
 
     // --- 3. SETUP SUB-MENU ENSIKLOPEDIA ---
     encyMenuItems = {
-        {"Sirah: Badar", "ENCY_BADAR"},       // Nanti buat scene baru utk bacaan
+        {"Sirah: Badar", "encyclopedia"},       // Nanti buat scene baru utk bacaan
         {"Sirah: Uhud", "LOCKED"},
         {"Tokoh-Tokoh", "LOCKED"},
         {"Kembali", "BACK_TO_MAIN"}
@@ -71,14 +71,31 @@ void MenuScene::switchState(MenuState newState) {
 
 void MenuScene::onEnter(Game* game) {
     gamePtr = game;
+    
+    // Stop any music when entering menu
+    if (gamePtr) {
+        gamePtr->stopMusic();
+    }
     change = false;
     next = "";
+
+    // Load Aset Gambar
+    bgTexture = loadTexture("assets/images/menu/background.png");
+    buttonIdleTex = loadTexture("assets/images/menu/btn_idle.png");
+    buttonHoverTex = loadTexture("assets/images/menu/btn_hover.png");
     
-    // Load aset (Pastikan path benar)
-    bgTexture = loadTexture("../assets/images/menu/background.png");
-    buttonIdleTex = loadTexture("../assets/images/menu/btn_idle.png");
-    buttonHoverTex = loadTexture("../assets/images/menu/btn_hover.png");
+    // --- SETUP AUDIO (BARU) ---
+    menuMusic = Mix_LoadMUS("assets/sounds/menu_theme.wav"); 
     
+    if (menuMusic == nullptr) {
+        std::cerr << "[Menu] Gagal load music: " << Mix_GetError() << "\n";
+    } else {
+        // Play Music (Looping)
+        Mix_PlayMusic(menuMusic, -1);
+        // Volume sedikit lebih keras dari ensiklopedia biar semangat (misal 80)
+        Mix_VolumeMusic(80); 
+    }
+
     // Mulai dari menu utama
     switchState(MenuState::MAIN_MENU);
 }
@@ -90,6 +107,16 @@ void MenuScene::onExit() {
     bgTexture = nullptr;
     buttonIdleTex = nullptr;
     buttonHoverTex = nullptr;
+    // --- BERSIHKAN AUDIO (BARU) ---
+    // Stop musik jika masih main
+    if (Mix_PlayingMusic()) {
+        Mix_HaltMusic();
+    }
+    // Hapus dari memori
+    if (menuMusic) {
+        Mix_FreeMusic(menuMusic);
+        menuMusic = nullptr;
+    }
 }
 
 void MenuScene::executeSelectedItem() {
@@ -106,6 +133,9 @@ void MenuScene::executeSelectedItem() {
     }
     else if (action == "GOTO_ENCY") {
         switchState(MenuState::ENCYCLOPEDIA);
+    }else if (action == "encyclopedia") { // <-- Tambahkan handle ini kalau belum ada
+        change = true;
+        next = "encyclopedia";
     }
     else if (action == "GOTO_SETTINGS") {
         switchState(MenuState::SETTINGS);

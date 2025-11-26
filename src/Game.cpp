@@ -1,6 +1,7 @@
 #include "Game.hpp"
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include <iostream>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -35,6 +36,28 @@ bool Game::init(const std::string& title, int width, int height, bool fullscreen
         std::cerr << "[SDL_ttf] Init failed: " << TTF_GetError() << "\n";
         return false;
     }
+    
+    // Initialize SDL_mixer for audio
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
+        std::cerr << "[SDL_mixer] Init failed: " << Mix_GetError() << "\n";
+        return false;
+    }
+    
+    // Check what audio decoders are available
+    int numDecoders = Mix_GetNumMusicDecoders();
+    std::cout << "[SDL_mixer] Available music decoders: ";
+    for (int i = 0; i < numDecoders; i++) {
+        std::cout << Mix_GetMusicDecoder(i) << " ";
+    }
+    std::cout << "\n";
+    
+    // Allocate mixing channels for sound effects
+    Mix_AllocateChannels(16);
+    
+    // Set volume to 50%
+    Mix_VolumeMusic(MIX_MAX_VOLUME / 20);  // 5% volume
+    Mix_Volume(-1, MIX_MAX_VOLUME / 2);
+
 
     Uint32 flags = SDL_WINDOW_SHOWN;
     if (fullscreen) {
@@ -62,14 +85,14 @@ bool Game::init(const std::string& title, int width, int height, bool fullscreen
 
     // load font utama
     // NOTE: pastikan path ini bener sesuai project kamu
-    if (!textRenderer.loadFont("../assets/fonts/DejaVuSans.ttf", 18)) {
+    if (!textRenderer.loadFont("assets/fonts/DejaVuSans.ttf", 18)) {
         std::cerr << "[Game] Failed to load font. Pastikan file .ttf ada.\n";
         // kita lanjut aja tapi teks ga akan muncul
     }
 
     // load npc texture
     {
-        SDL_Surface* surf = IMG_Load("../assets/images/NPCs.png");
+        SDL_Surface* surf = IMG_Load("assets/images/NPCs.png");
         if (!surf) {
             std::cerr << "[Game] Failed to load NPC sprite: " << IMG_GetError() << "\n";
         } else {
@@ -165,6 +188,22 @@ void Game::shutdown() {
         window = nullptr;
     }
 
+    
+    // Clean up audio resources
+    if (currentMusic) {
+        Mix_FreeMusic(currentMusic);
+        currentMusic = nullptr;
+    }
+    
+    for (auto& pair : soundEffects) {
+        if (pair.second) {
+            Mix_FreeChunk(pair.second);
+        }
+    }
+    soundEffects.clear();
+    
+    Mix_CloseAudio();
+    
     TTF_Quit();
     IMG_Quit();
     SDL_Quit();
@@ -190,3 +229,57 @@ void Game::getWindowSize(int& w, int& h) {
     SDL_GetWindowSize(window, &w, &h);
 }
 
+
+void Game::playMusic(const std::string& path, int loops) {
+    // Stop current music
+    if (currentMusic) {
+        Mix_HaltMusic();
+        Mix_FreeMusic(currentMusic);
+        currentMusic = nullptr;
+    }
+    
+    std::cout << "[Audio] Loading music: " << path << "\n";
+    
+    // Load new music
+    currentMusic = Mix_LoadMUS(path.c_str());
+    if (!currentMusic) {
+        std::cerr << "[Audio] Failed to load music: " << path << " - " << Mix_GetError() << "\n";
+        return;
+    }
+    
+    // Play music (loops: -1 = infinite, 0 = once, 1+ = that many times)
+    if (Mix_PlayMusic(currentMusic, loops) == -1) {
+        std::cerr << "[Audio] Failed to play music: " << Mix_GetError() << "\n";
+    } else {
+        std::cout << "[Audio] Playing music successfully\n";
+    }
+}
+
+void Game::stopMusic() {
+    if (Mix_PlayingMusic()) {
+        Mix_HaltMusic();
+    }
+    if (currentMusic) {
+        Mix_FreeMusic(currentMusic);
+        currentMusic = nullptr;
+    }
+}
+
+void Game::playSound(const std::string& path) {
+    // Check if sound is already loaded
+    if (soundEffects.find(path) == soundEffects.end()) {
+        std::cout << "[Audio] Loading sound: " << path << "\n";
+        // Load sound effect
+        Mix_Chunk* chunk = Mix_LoadWAV(path.c_str());
+        if (!chunk) {
+            std::cerr << "[Audio] Failed to load sound: " << path << " - " << Mix_GetError() << "\n";
+            return;
+        }
+        soundEffects[path] = chunk;
+    }
+    
+    // Play sound effect on any available channel
+    if (Mix_PlayChannel(-1, soundEffects[path], 0) == -1) {
+        std::cerr << "[Audio] Failed to play sound: " << Mix_GetError() << "\n";
+    }
+}

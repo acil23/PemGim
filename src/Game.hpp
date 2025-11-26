@@ -1,6 +1,8 @@
 #pragma once
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include <string>
+#include <map>
 #include "SceneManager.hpp"
 #include "TextRenderer.hpp"
 
@@ -41,6 +43,11 @@ public:
     TextRenderer* getTextRenderer() { return &textRenderer; }
 
     SDL_Renderer* getRenderer() { return renderer; }
+    
+    // Audio functions
+    void playMusic(const std::string& path, int loops = -1);
+    void stopMusic();
+    void playSound(const std::string& path);
 
 private:
     SDL_Window* window;
@@ -52,6 +59,10 @@ private:
 
     SDL_Texture* npcTexture = nullptr;
     ChosenCharacterData currentCharacter;
+    
+    // Audio resources
+    Mix_Music* currentMusic = nullptr;
+    std::map<std::string, Mix_Chunk*> soundEffects;
 
     void processEvents();
     void update(float deltaTime);

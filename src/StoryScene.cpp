@@ -44,9 +44,18 @@ void StoryScene::onEnter(Game* game) {
             SDL_FreeSurface(surf);
         }
     }
+    
+    // Play story music only if not already playing
+    if (gamePtr && !Mix_PlayingMusic()) {
+        gamePtr->playMusic("assets/sounds/story_song.wav", -1);
+    }
 }
 
 void StoryScene::onExit() {
+    // Stop music if transitioning to duel
+    if (gamePtr && next == "duel") {
+        gamePtr->stopMusic();
+        }
     if (bgTexture) { SDL_DestroyTexture(bgTexture); bgTexture = nullptr; }
 }
 
