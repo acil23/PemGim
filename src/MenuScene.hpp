@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <SDL.h>
+#include <SDL_mixer.h>
 
 // Enum untuk membedakan kita sedang di halaman menu mana
 enum class MenuState {
@@ -55,6 +56,7 @@ private:
     SDL_Texture* buttonHoverTex = nullptr;
     int btnW = 0;
     int btnH = 0;
+    Mix_Music* menuMusic = nullptr;
 
     SDL_Texture* loadTexture(const std::string& path);
     

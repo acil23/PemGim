@@ -1,0 +1,3 @@
+/home/aklein/Documents/PemGim/project-game/CMakeFiles/sejarah-rpg.dir
+/home/aklein/Documents/PemGim/project-game/CMakeFiles/edit_cache.dir
+/home/aklein/Documents/PemGim/project-game/CMakeFiles/rebuild_cache.dir

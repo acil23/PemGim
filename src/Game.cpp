@@ -85,14 +85,14 @@ bool Game::init(const std::string& title, int width, int height, bool fullscreen
 
     // load font utama
     // NOTE: pastikan path ini bener sesuai project kamu
-    if (!textRenderer.loadFont("../assets/fonts/DejaVuSans.ttf", 18)) {
+    if (!textRenderer.loadFont("assets/fonts/DejaVuSans.ttf", 18)) {
         std::cerr << "[Game] Failed to load font. Pastikan file .ttf ada.\n";
         // kita lanjut aja tapi teks ga akan muncul
     }
 
     // load npc texture
     {
-        SDL_Surface* surf = IMG_Load("../assets/images/NPCs.png");
+        SDL_Surface* surf = IMG_Load("assets/images/NPCs.png");
         if (!surf) {
             std::cerr << "[Game] Failed to load NPC sprite: " << IMG_GetError() << "\n";
         } else {

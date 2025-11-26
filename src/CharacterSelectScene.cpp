@@ -46,13 +46,13 @@ void CharacterSelectScene::onEnter(Game* game) {
 
     // --- 2. Load Assets ---
     // Load Background
-    SDL_Surface* bgSurf = IMG_Load("../assets/images/choose_bg.jpg"); // Pastikan ekstensi .jpg atau .png sesuai filemu
+    SDL_Surface* bgSurf = IMG_Load("assets/images/choose_bg.jpg"); // Pastikan ekstensi .jpg atau .png sesuai filemu
     if (bgSurf) {
         bgTexture = SDL_CreateTextureFromSurface(gamePtr->getRenderer(), bgSurf);
         SDL_FreeSurface(bgSurf);
     } else {
         // Fallback jika jpg tidak ada, coba png
-        bgSurf = IMG_Load("../assets/images/choose_bg.png");
+        bgSurf = IMG_Load("assets/images/choose_bg.png");
         if (bgSurf) {
             bgTexture = SDL_CreateTextureFromSurface(gamePtr->getRenderer(), bgSurf);
             SDL_FreeSurface(bgSurf);
@@ -62,7 +62,7 @@ void CharacterSelectScene::onEnter(Game* game) {
     }
 
     // Load Characters Spritesheet (choose.png)
-    SDL_Surface* surf = IMG_Load("../assets/images/choose.png");
+    SDL_Surface* surf = IMG_Load("assets/images/choose.png");
     if (!surf) {
         std::cerr << "[CharSelect] Gagal load choose.png: " << IMG_GetError() << "\n";
         // Fallback size agar tidak crash saat render

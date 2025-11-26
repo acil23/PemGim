@@ -1,3 +1,0 @@
-/home/waz/Game/build/CMakeFiles/sejarah-rpg.dir
-/home/waz/Game/build/CMakeFiles/edit_cache.dir
-/home/waz/Game/build/CMakeFiles/rebuild_cache.dir

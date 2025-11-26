@@ -1,6 +1,6 @@
 #include "SceneManager.hpp"
 #include "Game.hpp"
-
+#include "EncyclopediaScene.hpp"
 // Include semua scene
 #include "MenuScene.hpp"
 #include "CharacterSelectScene.hpp"
@@ -40,6 +40,8 @@ std::unique_ptr<Scene> SceneManager::createSceneByName(const std::string& name) 
     } 
     else if (name == "duel") {
         return std::make_unique<DuelScene>();
+    }else if (name == "encyclopedia") {
+        return std::make_unique<EncyclopediaScene>();
     }
 
     // --- 2. INTRO FLOW (BABAK 1 - 3) ---
@@ -47,7 +49,7 @@ std::unique_ptr<Scene> SceneManager::createSceneByName(const std::string& name) 
     // Babak 1
     if (name == "badar_intro") {
         return createStory(
-            "../assets/images/Scene1.png", 
+            "assets/images/Scene1.png", 
             "BABAK 1: PEMICU AWAL",
             {
                 "Nabi Muhammad SAW bergerak dengan sekitar 313 kaum Muslimin.",
@@ -61,7 +63,7 @@ std::unique_ptr<Scene> SceneManager::createSceneByName(const std::string& name) 
     // Babak 2
     if (name == "story_2_eskalasi") {
         return createStory(
-            "../assets/images/Scene2.png", 
+            "assets/images/Scene2.png", 
             "BABAK 2: ESKALASI",
             {
                 "Abu Sufyan berhasil lolos dan meminta bantuan ke Makkah.",
@@ -75,7 +77,7 @@ std::unique_ptr<Scene> SceneManager::createSceneByName(const std::string& name) 
     // Babak 3 (Intro Mubarazah)
     if (name == "story_3_tantangan") {
         return createStory(
-            "../assets/images/Scene3.png", 
+            "assets/images/Scene3.png", 
             "BABAK 3: TANTANGAN MUBARAZAH",
             {
                 "Ketegangan memuncak. Tiga ksatria elit Quraysh—Utbah, Shaybah, dan Al-Walid—maju ke tengah medan.",
@@ -96,7 +98,7 @@ std::unique_ptr<Scene> SceneManager::createSceneByName(const std::string& name) 
         
         if (charName.find("Ali") != std::string::npos) {
             return createStory(
-                "../assets/images/Scene3.1(Ali).png", 
+                "assets/images/Scene3.1(Ali).png", 
                 "ALI BIN ABI THALIB",
                 {
                     "Kamu maju sebagai Ali bin Abi Thalib, ksatria termuda.",
@@ -108,7 +110,7 @@ std::unique_ptr<Scene> SceneManager::createSceneByName(const std::string& name) 
         } 
         else if (charName.find("Hamzah") != std::string::npos) {
             return createStory(
-                "../assets/images/Scene3.2(Hamzah).png", 
+                "assets/images/Scene3.2(Hamzah).png", 
                 "HAMZAH BIN ABDUL MUTHALIB",
                 {
                     "Kamu maju sebagai Hamzah, Sang Singa Allah.",
@@ -120,7 +122,7 @@ std::unique_ptr<Scene> SceneManager::createSceneByName(const std::string& name) 
         } 
         else { // Ubaydah
             return createStory(
-                "../assets/images/Scene3.3(Ubaidah).png", 
+                "assets/images/Scene3.3(Ubaidah).png", 
                 "UBAYDAH BIN HARITS",
                 {
                     "Kamu maju sebagai Ubaydah, yang tertua di antara ketiganya.",
@@ -139,7 +141,7 @@ std::unique_ptr<Scene> SceneManager::createSceneByName(const std::string& name) 
 
         if (charName.find("Ali") != std::string::npos) {
             return createStory(
-                "../assets/images/Scene3.1(Ali).png", 
+                "assets/images/Scene3.1(Ali).png", 
                 "AKHIR MUBARAZAH: ALI",
                 {
                     "Tidak ada basa-basi. Saat Al-Walid mengayunkan pedangnya, kamu menghindar dengan kelincahan luar biasa.",
@@ -151,7 +153,7 @@ std::unique_ptr<Scene> SceneManager::createSceneByName(const std::string& name) 
         } 
         else if (charName.find("Hamzah") != std::string::npos) {
             return createStory(
-                "../assets/images/Scene3.2(Hamzah).png", 
+                "assets/images/Scene3.2(Hamzah).png", 
                 "AKHIR MUBARAZAH: HAMZAH",
                 {
                     "Pengalaman tempurmu berbicara. Kamu tidak memberi Shaybah kesempatan bernapas.",
@@ -163,7 +165,7 @@ std::unique_ptr<Scene> SceneManager::createSceneByName(const std::string& name) 
         } 
         else { // Ubaydah
             return createStory(
-                "../assets/images/Scene3.3(Ubaidah).png", 
+                "assets/images/Scene3.3(Ubaidah).png", 
                 "AKHIR MUBARAZAH: UBAYDAH",
                 {
                     "Duel berjalan alot dan keras. Pedang beradu berkali-kali.",
@@ -181,7 +183,7 @@ std::unique_ptr<Scene> SceneManager::createSceneByName(const std::string& name) 
     // Babak 5 (Penutup Mubarazah)
     if (name == "story_5_penutup") {
         return createStory(
-            "../assets/images/Scene4.png", 
+            "assets/images/Scene4.png", 
             "PENUTUP MUBARAZAH",
             {
                 "Melihat Ubaydah dan Utbah sama-sama terkapar, Ali dan Hamzah yang telah menang segera berlari.",
@@ -195,7 +197,7 @@ std::unique_ptr<Scene> SceneManager::createSceneByName(const std::string& name) 
     // Babak 6 (Perang Total)
     if (name == "story_6_perang_total") {
         return createStory(
-            "../assets/images/Scene5.png", 
+            "assets/images/Scene5.png", 
             "PERANG TOTAL",
             {
                 "Setelah mental Quraysh jatuh akibat Mubarazah, perang total pecah.",
@@ -209,7 +211,7 @@ std::unique_ptr<Scene> SceneManager::createSceneByName(const std::string& name) 
     // Babak 7 (Hasil Akhir)
     if (name == "story_7_hasil") {
         return createStory(
-            "../assets/images/Scene6.png", 
+            "assets/images/Scene6.png", 
             "KEMENANGAN GEMILANG",
             {
                 "Muslimin menang telak. 70 tokoh Quraysh tewas (termasuk Abu Jahal), dan 70 lainnya ditawan.",
