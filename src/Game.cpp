@@ -38,7 +38,7 @@ bool Game::init(const std::string& title, int width, int height, bool fullscreen
     }
     
     // Initialize SDL_mixer for audio
-    if (Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 1024) < 0) {
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         std::cerr << "[SDL_mixer] Init failed: " << Mix_GetError() << "\n";
         return false;
     }
