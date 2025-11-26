@@ -33,3 +33,13 @@
 90	2857	1764074365953158080	CMakeFiles/sejarah-rpg.dir/src/StoryScene.cpp.o	60961f219868ecde
 88	2916	1764074365949824802	CMakeFiles/sejarah-rpg.dir/src/SceneManager.cpp.o	3fd7cee7bc6b616
 2916	3213	1764074368779777984	sejarah-rpg	53baf57750985b40
+102	5293	1764124383109165184	CMakeFiles/sejarah-rpg.dir/src/main.cpp.o	2c4d988c4f5394fe
+112	5457	1764124383119164344	CMakeFiles/sejarah-rpg.dir/src/BadarIntroScene.cpp.o	299968f3ef25691a
+115	6146	1764124383122497397	CMakeFiles/sejarah-rpg.dir/src/DuelScene.cpp.o	29202fef0025982d
+104	6190	1764124383112498238	CMakeFiles/sejarah-rpg.dir/src/Game.cpp.o	e31f29ffd09d548c
+106	6225	1764124383112498238	CMakeFiles/sejarah-rpg.dir/src/MenuScene.cpp.o	6a8e6d9f8e371f1b
+105	6863	1764124383112498238	CMakeFiles/sejarah-rpg.dir/src/SceneManager.cpp.o	3fd7cee7bc6b616
+5293	8704	1764124388298729054	CMakeFiles/sejarah-rpg.dir/src/EndingScene.cpp.o	ef3fe9468d9170b3
+65	2743	1764124670893678337	CMakeFiles/sejarah-rpg.dir/src/CharacterSelectScene.cpp.o	a08640c439991ed4
+8	2242	1764124713594939846	CMakeFiles/sejarah-rpg.dir/src/StoryScene.cpp.o	60961f219868ecde
+2242	2497	1764124715831656567	sejarah-rpg	53baf57750985b40
